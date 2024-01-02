@@ -11,12 +11,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.movie.mymovie.ui.theme.*
+import com.movie.mymovie.ui.theme.Color;
+import com.movie.mymovie.ui.theme.MymovieTheme
+import com.movie.mymovie.ui.theme.Size;
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     var bottomSelectedState by remember { mutableStateOf(0) }
                     Scaffold(
-                        modifier = Modifier.background(BackgroundColor),
+                        modifier = Modifier.background(Color.colorBg),
                         bottomBar = {
                             BottomBarWidget(bottomSelectedState, mBottomTabItems) {
                                 bottomSelectedState = it
@@ -65,7 +66,7 @@ fun BottomBarWidget(
     onItemSelected: (position: Int) -> Unit
 ) {
     BottomNavigation(
-        backgroundColor = Color.White,
+        backgroundColor = Color.colorWhite,
     ) {
         bottomItems.forEachIndexed { index, item ->
             BottomNavigationItem(
@@ -82,19 +83,19 @@ fun BottomBarWidget(
                         ),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(36.dp)
-                            .padding(5.dp)
+                            .size(Size.middleIcon)
+                            .padding(Size.miniMargin)
                     )
                 },
                 label = {
                     Text(
                         text = bottomItems[index].label,
                         fontWeight = FontWeight.Normal,
-                        fontSize = 12.sp,
+                        fontSize = Size.normalFontSize,
                         color = if (selectedPosition == index) {
-                            SelectedColor
+                            Color.selectedColor
                         } else {
-                            UnSelectedColor
+                            Color.normalColor
                         }
                     )
                 },
