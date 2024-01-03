@@ -20,7 +20,7 @@ class TokenHeaderInterceptor : Interceptor {
         get() {
             val builder = Builder()
             builder.connectTimeout(15, TimeUnit.SECONDS)
-            val token: String = BaseApplication.instance.token
+            val token: String = BaseApplication.getInstance().token
             builder.addInterceptor(Interceptor { chain: Interceptor.Chain ->
                 val build = chain.request().newBuilder()
                     .addHeader("Authorization", token)

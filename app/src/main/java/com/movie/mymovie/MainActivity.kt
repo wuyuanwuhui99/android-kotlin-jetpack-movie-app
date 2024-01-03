@@ -84,10 +84,10 @@ class MainActivity : ComponentActivity() {
                 val gson = Gson()
                 val body: ResultEntity? = response.body()
                 if (body != null) {
-                    BaseApplication.instance.token = body.token
+                    BaseApplication.getInstance().token = body.token
                 }
                 if (body != null) {
-                    BaseApplication.instance.userEntity=
+                    BaseApplication.getInstance().userEntity=
                         gson.fromJson(
                             gson.toJson(body.data),
                             UserEntity::class.java
