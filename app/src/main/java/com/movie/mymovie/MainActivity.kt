@@ -3,8 +3,8 @@ package com.movie.mymovie
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -33,38 +33,41 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : ComponentActivity() {
-    @ExperimentalFoundationApi
+    val isInit: MutableState<Boolean> = mutableStateOf(false)
+
     @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getUserData()
         setContent {
-            MymovieTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    var bottomSelectedState by remember { mutableStateOf(0) }
-                    Column {
-                        //根据底部导航选中的下标改变展示的页面
-                        val pagerState = rememberPagerState(
-                            pageCount = 4,
-                            initialPage = bottomSelectedState,
-                            initialOffscreenLimit = 3
-                        )
-                        HorizontalPager(
-                            state = pagerState,
-                            dragEnabled = false,
-                            modifier = Modifier.weight(1f)
-                        ) { page ->
-                            when (page) {
-                                0 -> MovieHomePage()
-                                1 -> MoviePage()
-                                2 -> TVPage()
-                                3 -> MyPage()
+            if(isInit.value){
+                MymovieTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        var bottomSelectedState by remember { mutableStateOf(0) }
+                        Column {
+                            //根据底部导航选中的下标改变展示的页面
+                            val pagerState = rememberPagerState(
+                                pageCount = 4,
+                                initialPage = bottomSelectedState,
+                                initialOffscreenLimit = 3
+                            )
+                            HorizontalPager(
+                                state = pagerState,
+                                dragEnabled = false,
+                                modifier = Modifier.weight(1f).background(Color.colorBg)
+                            ) { page ->
+                                when (page) {
+                                    0 -> MovieHomePage()
+                                    1 -> MoviePage()
+                                    2 -> TVPage()
+                                    3 -> MyPage()
+                                }
                             }
-                        }
-                        BottomBarWidget(bottomSelectedState, mBottomTabItems,pagerState) {
-                            bottomSelectedState = it
+                            BottomBarWidget(bottomSelectedState, mBottomTabItems,pagerState) {
+                                bottomSelectedState = it
+                            }
                         }
                     }
                 }
@@ -98,6 +101,7 @@ class MainActivity : ComponentActivity() {
                         body.token
                     )
                 }
+                isInit.value = true;
             }
 
             override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
