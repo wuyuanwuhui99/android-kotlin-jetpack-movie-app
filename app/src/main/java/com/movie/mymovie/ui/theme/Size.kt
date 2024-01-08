@@ -4,9 +4,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 object Size {
-    val containerPadding = 15.sp;// 每个模块之间的内边距和外边距
+    val containerPadding = 15.dp;// 每个模块之间的内边距和外边距
     val columnPadding = 20.sp;// 上下边距
-    val middleRadius = 10.sp;// 圆角大小
+    val middleRadius = 10.dp;// 圆角大小
     val bigRadius = 20.sp;// 圆角大小
     val superRadius = 30.sp;// 加大版圆角
     val minBtnRadius = 5.sp;// 小圆角
@@ -23,12 +23,12 @@ object Size {
     val navigationIcon = 30.sp;// 导航图标
     val smallIcon = 20.sp;// 中等图标
     val miniIcon = 15.sp;// 超小图片
-    val smallMargin = 10.sp;//小边距
+    val smallMargin = 10.dp;//小边距
     val miniMargin = 5.dp;// 超小边距
     val smallFontSize = 14.sp;//常规字体
     val middleFontSize = 16.sp;//常规字体
     val bigFontSize = 20.sp;// 大标题字体
-    val middleAvater = 40.sp;// 中等头像
+    val middleAvater = 40.dp;// 中等头像
     val bigAvater = 60.sp;// 大头像
     val borderWidth = 1.sp;// 边框大小
     val buttonHeight = 40.sp;//按钮大小
