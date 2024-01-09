@@ -16,7 +16,7 @@ object Size {
     val movieWidth = 150.sp; // 电影图片宽度
     val movieHeight = 200.sp;// 电影图片高度
     val modualHeight = 250.sp;// 模块的高度
-    val bigIcon = 40.sp;// 大图标
+    val bigIcon = 40.dp;// 大图标
     val middleIcon = 30.dp;// 中等图标
     val playIcon = 25.sp;// 中等图标
     val normalFontSize = 12.sp;// 正常字体大小
