@@ -78,7 +78,7 @@ class MainActivity : ComponentActivity() {
     /**
      * @author: wuwenqiang
      * @description: 获取用户信息
-     * @date: 2021-12-04 15:59
+     * @date: 2023-12-04 15:59
      */
     private fun getUserData() {
         val userData: Call<ResultEntity> = RequestUtils.instance.userData

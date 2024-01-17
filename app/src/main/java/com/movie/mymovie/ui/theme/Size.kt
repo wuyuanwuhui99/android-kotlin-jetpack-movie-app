@@ -12,10 +12,9 @@ object Size {
     val minBtnRadius = 5.sp;// 小圆角
     val middleBtnWidth = 70.sp;// 中等按钮宽度
     val middleBtnHeight = 35.sp;// 中等按钮高度
-    val swiperHeight = 200.sp; // 轮播高度
+    val swiperHeight = 180.dp; // 轮播高度
     val movieWidth = 150.sp; // 电影图片宽度
     val movieHeight = 200.sp;// 电影图片高度
-    val modualHeight = 250.sp;// 模块的高度
     val bigIcon = 40.dp;// 大图标
     val middleIcon = 30.dp;// 中等图标
     val playIcon = 25.sp;// 中等图标

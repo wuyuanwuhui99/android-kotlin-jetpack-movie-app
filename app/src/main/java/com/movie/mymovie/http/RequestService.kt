@@ -13,7 +13,7 @@ interface RequestService {
     fun getCategoryList(
         @Query("category") category: String?,
         @Query("classify") classify: String?
-    ): Call<ResultEntity?>?
+    ): Call<ResultEntity>
 
     @GET(Api.GETALLCATEGORYLISTBYPAGENAME)
     fun getAllCategoryListByPageName(@Query("pageName") pageName: String?): Call<ResultEntity?>?
