@@ -4,17 +4,18 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.rememberPagerState
 import com.google.gson.Gson
 import com.movie.mymovie.entity.UserEntity
 import com.movie.mymovie.http.RequestUtils
@@ -27,10 +28,10 @@ import com.movie.mymovie.ui.theme.Color;
 import com.movie.mymovie.ui.theme.MymovieTheme
 import com.movie.mymovie.ui.theme.Size;
 import com.movie.mymovie.utils.SharedPreferencesUtils
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import androidx.navigation.compose.rememberNavController
 
 class MainActivity : ComponentActivity() {
     val isInit: MutableState<Boolean> = mutableStateOf(false)
@@ -45,30 +46,7 @@ class MainActivity : ComponentActivity() {
                     Surface(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        var bottomSelectedState by remember { mutableStateOf(0) }
-                        Column {
-                            //根据底部导航选中的下标改变展示的页面
-                            val pagerState = rememberPagerState(
-                                pageCount = 4,
-                                initialPage = bottomSelectedState,
-                                initialOffscreenLimit = 3
-                            )
-                            HorizontalPager(
-                                state = pagerState,
-                                dragEnabled = false,
-                                modifier = Modifier.weight(1f).background(Color.colorBg)
-                            ) { page ->
-                                when (page) {
-                                    0 -> MovieHomePage()
-                                    1 -> MoviePage()
-                                    2 -> TVPage()
-                                    3 -> MyPage()
-                                }
-                            }
-                            BottomBarWidget(bottomSelectedState, mBottomTabItems,pagerState) {
-                                bottomSelectedState = it
-                            }
-                        }
+                        BottomNavigationScreen()
                     }
                 }
             }
@@ -111,65 +89,94 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-val mBottomTabItems =
-    listOf(
-        BottomItem("首页", R.mipmap.icon_home_active, R.mipmap.icon_home),
-        BottomItem("电影", R.mipmap.icon_movie_active, R.mipmap.icon_movie),
-        BottomItem("电视剧", R.mipmap.icon_tv_active, R.mipmap.icon_tv),
-        BottomItem("我的", R.mipmap.icon_user_active, R.mipmap.icon_user)
+
+@Composable
+fun BottomNavigationScreen() {
+    val navController = rememberNavController()
+    val items = listOf(
+        NavigationItem.Home,
+        NavigationItem.Movie,
+        NavigationItem.TV,
+        NavigationItem.My
     )
 
-@ExperimentalPagerApi
-@Composable
-fun BottomBarWidget(
-    selectedPosition: Int,
-    bottomItems: List<BottomItem>,
-    pagerState: PagerState,
-    onItemSelected: (position: Int) -> Unit,
-) {
-    val scope = rememberCoroutineScope()
-    BottomNavigation(
-        backgroundColor = Color.colorWhite,
-    ) {
-        bottomItems.forEachIndexed { index, item ->
-            BottomNavigationItem(
-                selected = selectedPosition == index,
-                onClick = {
-                    onItemSelected.invoke(index)
-                    scope.launch {
-                        pagerState.scrollToPage(index)
-                    }
-                },
-                icon = {
-                    Image(
-                        painter = painterResource(
-                            id = if (selectedPosition == index) {
-                                item.selectItemRes
-                            } else {
-                                item.unSelectItemRes
+    Scaffold(
+        bottomBar = {
+            BottomNavigation (
+                backgroundColor = Color.colorWhite,
+            ){
+                var bottomSelectedState by remember { mutableStateOf(0) }
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                items.forEachIndexed { index,item ->
+                    BottomNavigationItem(
+                        icon = {
+                            Image(
+                                painter = painterResource(
+                                    id = if (bottomSelectedState == index) {
+                                        item.selectItemRes
+                                    } else {
+                                        item.unSelectItemRes
+                                    }
+                                ),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(Size.middleIcon)
+                                    .padding(Size.miniMargin)
+                            )
+                        },
+                        label = {
+                            Text(
+                                text = item.title,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = Size.normalFontSize,
+                                color = if (bottomSelectedState == index) {
+                                    Color.selectedColor
+                                } else {
+                                    Color.normalColor
+                                }
+                            )
+                        },
+                        selected = currentDestination?.hierarchy?.any{it.route == item.route} == true,
+                        onClick = {
+                            bottomSelectedState = index;
+                            navController.navigate(item.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                        ),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(Size.middleIcon)
-                            .padding(Size.miniMargin)
-                    )
-                },
-                label = {
-                    Text(
-                        text = bottomItems[index].label,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = Size.normalFontSize,
-                        color = if (selectedPosition == index) {
-                            Color.selectedColor
-                        } else {
-                            Color.normalColor
                         }
                     )
-                },
-            )
+                }
+            }
+        }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = NavigationItem.Home.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(NavigationItem.Home.route) {
+                MovieHomePage()
+            }
+            composable(NavigationItem.Movie.route) {
+                MoviePage()
+            }
+            composable(NavigationItem.TV.route) {
+                TVPage()
+            }
+            composable(NavigationItem.My.route) {
+                MyPage()
+            }
         }
     }
 }
 
-data class BottomItem(val label: String, val selectItemRes: Int, val unSelectItemRes: Int)
+sealed class NavigationItem(val route: String, val title: String, val selectItemRes: Int, val unSelectItemRes: Int) {
+    object Home : NavigationItem("home", "首页", R.mipmap.icon_home_active, R.mipmap.icon_home)
+    object Movie : NavigationItem("movie", "电影", R.mipmap.icon_movie_active, R.mipmap.icon_movie)
+    object TV : NavigationItem("tv", "电视剧", R.mipmap.icon_tv_active, R.mipmap.icon_tv)
+    object My : NavigationItem("my", "我的", R.mipmap.icon_user_active, R.mipmap.icon_user)
+}

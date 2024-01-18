@@ -67,6 +67,7 @@ dependencies {
 
     implementation "com.airbnb.android:lottie-compose:5.0.2"
     implementation "io.coil-kt:coil-compose:1.4.0"
+    implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
 
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.alibaba:fastjson:1.1.34.android'

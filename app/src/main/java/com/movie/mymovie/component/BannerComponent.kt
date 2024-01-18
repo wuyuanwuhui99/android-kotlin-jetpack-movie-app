@@ -44,21 +44,23 @@ fun Banner(
         Swipper(movieEntityList = movieEntityList)
     }else{
         val categoryListService: Call<ResultEntity> = RequestUtils.instance.getCategoryList(category,classify)
-        categoryListService.enqueue(object : Callback<ResultEntity> {
-            override fun onResponse(call: Call<ResultEntity>, response: Response<ResultEntity>) {
-                val movieEntityLists = JSON.parseArray(
-                    JSON.toJSONString(response.body()?.data ?: ""),
-                    MovieEntity::class.java
-                ).subList(0,5)
-                for (movieEntity in movieEntityLists){
-                    movieEntityList.add(movieEntity)
+        LaunchedEffect(Unit){
+            categoryListService.enqueue(object : Callback<ResultEntity> {
+                override fun onResponse(call: Call<ResultEntity>, response: Response<ResultEntity>) {
+                    val movieEntityLists = JSON.parseArray(
+                        JSON.toJSONString(response.body()?.data ?: ""),
+                        MovieEntity::class.java
+                    ).subList(0,5)
+                    for (movieEntity in movieEntityLists){
+                        movieEntityList.add(movieEntity)
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
-                println("错误")
-            }
-        })
+                override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
+                    println("错误")
+                }
+            })
+        }
     }
 
 }
