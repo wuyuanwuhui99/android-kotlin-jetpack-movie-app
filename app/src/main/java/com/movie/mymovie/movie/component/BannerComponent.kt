@@ -1,8 +1,7 @@
-package com.movie.mymovie.component
+package com.movie.mymovie.movie.component
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -16,8 +15,8 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import com.movie.mymovie.api.Api
-import com.movie.mymovie.entity.MovieEntity
+import com.movie.mymovie.movie.api.Api
+import com.movie.mymovie.movie.entity.MovieEntity
 import com.movie.mymovie.http.RequestUtils
 import com.movie.mymovie.http.ResultEntity
 import com.movie.mymovie.ui.theme.Color

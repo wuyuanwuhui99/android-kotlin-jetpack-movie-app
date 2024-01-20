@@ -1,20 +1,18 @@
-package com.movie.mymovie.api
+package com.movie.mymovie.movie.api
 
 object Api {
     const val HOST = "http://192.168.0.4:5001"
 
     //查询所有大分类
-    const val GETUSERDATA = "/service/movie/getUserData"
+    const val GETUSERDATA = "/service/user/getUserData"
     const val GETCATEGORYLIST = "/service/movie/getCategoryList" // 获取分类影片
     const val GETTOPMOVIELIST = "/service/movie/getTopMovieList" // 根据分类前20条影片数据
     const val GETKEYWORD = "/service/movie/getKeyWord" //按照classify查询搜索栏的关键词
-    const val GETALLCATEGORYBYCLASSIFY =
-        "/service/movie/getAllCategoryByClassify" //按classify大类查询所有catory小类
-    const val GETALLCATEGORYLISTBYPAGENAME =
-        "/service/movie/getAllCategoryListByPageName" //按页面获取要展示的category小类
+    const val GETALLCATEGORYBYCLASSIFY = "/service/movie/getAllCategoryByClassify" //按classify大类查询所有catory小类
+    const val GETALLCATEGORYLISTBYPAGENAME = "/service/movie/getAllCategoryListByPageName" //按页面获取要展示的category小类
     const val GETUSERMSG = "/service/movie-getway/getUserMsg" //获取用户四个指标信息，使用天数，关注，观看记录，浏览记录
     const val GETSEARCHRESULT = "/service/movie/search" //搜索
-    const val LOGIN = "/service/movie/login" //登录
+    const val LOGIN = "/service/user/login" //登录
     const val GETSTAR = "/service/movie/getStar/{movieId}" //获取演员
     const val GETMOVIEURL = "/service/movie/getMovieUrl" //获取电影播放地址
     const val GETVIEWRECORD = "/service/movie-getway/getViewRecord" //获取浏览记录

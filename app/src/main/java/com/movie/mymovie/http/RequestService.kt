@@ -1,7 +1,7 @@
 package com.movie.mymovie.http
 
-import com.movie.mymovie.api.Api
-import com.movie.mymovie.entity.UserEntity
+import com.movie.mymovie.movie.api.Api
+import com.movie.mymovie.movie.entity.UserEntity
 import retrofit2.Call
 import retrofit2.http.*
 

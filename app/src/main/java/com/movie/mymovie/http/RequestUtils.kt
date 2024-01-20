@@ -2,7 +2,7 @@ package com.movie.mymovie.http
 
 
 import retrofit2.Retrofit
-import com.movie.mymovie.api.Api
+import com.movie.mymovie.movie.api.Api
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RequestUtils {

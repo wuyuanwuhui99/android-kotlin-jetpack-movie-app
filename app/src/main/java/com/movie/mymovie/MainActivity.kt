@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -17,13 +18,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.gson.Gson
-import com.movie.mymovie.entity.UserEntity
+import com.movie.mymovie.movie.entity.UserEntity
 import com.movie.mymovie.http.RequestUtils
 import com.movie.mymovie.http.ResultEntity
-import com.movie.mymovie.pages.MovieHomePage
-import com.movie.mymovie.pages.MoviePage
-import com.movie.mymovie.pages.MyPage
-import com.movie.mymovie.pages.TVPage
+import com.movie.mymovie.movie.pages.MovieHomePage
+import com.movie.mymovie.movie.pages.MoviePage
+import com.movie.mymovie.movie.pages.MyPage
+import com.movie.mymovie.movie.pages.TVPage
 import com.movie.mymovie.ui.theme.Color;
 import com.movie.mymovie.ui.theme.MymovieTheme
 import com.movie.mymovie.ui.theme.Size;
@@ -32,6 +33,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.navigation.compose.rememberNavController
+import com.movie.mymovie.model.UserViewModel
 
 class MainActivity : ComponentActivity() {
     val isInit: MutableState<Boolean> = mutableStateOf(false)

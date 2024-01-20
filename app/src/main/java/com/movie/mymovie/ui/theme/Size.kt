@@ -35,4 +35,6 @@ object Size {
     val childAspectRatio = 1.6.sp;// 网格布局宽高比例
     val pageSize = 20.sp;// 每页显示大小
     val minPlayIcon = 80.sp;// 音乐播放器圈圈大小
+    val lineHeight = 30.dp// 竖线高度
+    val lineWidth = 2.dp// 竖线宽度
 }

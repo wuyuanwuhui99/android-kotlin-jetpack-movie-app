@@ -1,4 +1,4 @@
-package com.movie.mymovie.pages
+package com.movie.mymovie.movie.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,26 +14,18 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import coil.transition.CrossfadeTransition
-import com.alibaba.fastjson.JSON
-import com.google.gson.Gson
 import com.movie.mymovie.BaseApplication
 import com.movie.mymovie.R
-import com.movie.mymovie.api.Api
-import com.movie.mymovie.component.Banner
-import com.movie.mymovie.entity.MovieEntity
-import com.movie.mymovie.http.RequestUtils
-import com.movie.mymovie.http.ResultEntity
+import com.movie.mymovie.movie.api.Api
+import com.movie.mymovie.movie.component.Banner
+import com.movie.mymovie.movie.component.ClassifyComponent
 import com.movie.mymovie.ui.theme.Color
 import com.movie.mymovie.ui.theme.MymovieTheme
 import com.movie.mymovie.ui.theme.Size
 import com.movie.mymovie.ui.theme.Style
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @Composable
 fun MovieHomePage() {
-
 
     MymovieTheme {
         Column(
@@ -86,63 +78,7 @@ fun MovieHomePage() {
                 modifier = Modifier
                     .height(Size.containerPadding)
                     .fillMaxWidth())
-
-            Row (
-                modifier = Style.boxDecoration
-                    ){
-                Column(
-                    modifier = Modifier.weight(1F, true),
-                    horizontalAlignment =  Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.icon_hot),
-                        modifier = Modifier
-                            .size(Size.bigIcon)
-                            .padding(0.dp, 0.dp, 0.dp, Size.smallMargin),
-                        contentDescription = ""
-                    )
-                    Text(text = "热门")
-                }
-                Column(
-                    modifier = Modifier.weight(1F, true),
-                    horizontalAlignment =  Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.icon_play),
-                        modifier = Modifier
-                            .size(Size.bigIcon)
-                            .padding(0.dp, 0.dp, 0.dp, Size.smallMargin),
-                        contentDescription = ""
-                    )
-                    Text(text = "预告")
-                }
-                Column(
-                    modifier = Modifier.weight(1F, true),
-                    horizontalAlignment =  Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.icon_top),
-                        modifier = Modifier
-                            .size(Size.bigIcon)
-                            .padding(0.dp, 0.dp, 0.dp, Size.smallMargin),
-                        contentDescription = ""
-                    )
-                    Text(text = "最新")
-                }
-                Column(
-                    modifier = Modifier.weight(1F, true),
-                    horizontalAlignment =  Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(id = R.mipmap.icon_classify),
-                        modifier = Modifier
-                            .size(Size.bigIcon)
-                            .padding(0.dp, 0.dp, 0.dp, Size.smallMargin),
-                        contentDescription = ""
-                    )
-                    Text(text = "分类")
-                }
-            }
+            ClassifyComponent()
             Divider(
                 color = Color.Transparent,
                 modifier = Modifier

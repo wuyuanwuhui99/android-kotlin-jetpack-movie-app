@@ -1,4 +1,4 @@
-package com.movie.mymovie.pages
+package com.movie.mymovie.movie.pages
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -8,12 +8,12 @@ import androidx.compose.ui.Modifier
 import com.movie.mymovie.ui.theme.MymovieTheme
 
 @Composable
-fun TVPage() {
+fun MyPage() {
     MymovieTheme{
         Column(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Text("这是电视剧页")
+            Text("这是用户页")
         }
     }
 }

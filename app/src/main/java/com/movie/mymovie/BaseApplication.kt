@@ -1,7 +1,7 @@
 package com.movie.mymovie
 
 import android.app.Application
-import com.movie.mymovie.entity.UserEntity
+import com.movie.mymovie.movie.entity.UserEntity
 import com.movie.mymovie.utils.SharedPreferencesUtils
 
 

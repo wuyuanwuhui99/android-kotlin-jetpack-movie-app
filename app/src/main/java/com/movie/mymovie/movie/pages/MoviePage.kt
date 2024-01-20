@@ -1,4 +1,4 @@
-package com.movie.mymovie.pages
+package com.movie.mymovie.movie.pages
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth

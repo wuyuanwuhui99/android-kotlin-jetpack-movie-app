@@ -1,4 +1,4 @@
-package com.movie.mymovie.entity
+package com.movie.mymovie.movie.entity
 
 class CategoryEntity {
     var category: String? = null
