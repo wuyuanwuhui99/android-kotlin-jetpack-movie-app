@@ -19,7 +19,7 @@ interface RequestService {
     fun getAllCategoryListByPageName(@Query("pageName") pageName: String?): Call<ResultEntity?>?
 
     @GET(Api.GETKEYWORD)
-    fun getKeyWord(@Query("classify") classify: String?): Call<ResultEntity?>?
+    fun getKeyWord(@Query("classify") classify: String): Call<ResultEntity>
 
     @get:GET(Api.GETUSERMSG)
     val userMsg: Call<ResultEntity?>?
