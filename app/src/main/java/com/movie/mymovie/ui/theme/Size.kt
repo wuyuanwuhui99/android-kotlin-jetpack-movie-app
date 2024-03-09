@@ -7,7 +7,7 @@ object Size {
     val containerPadding = 15.dp;// 每个模块之间的内边距和外边距
     val columnPadding = 20.sp;// 上下边距
     val middleRadius = 10.dp;// 圆角大小
-    val bigRadius = 20.sp;// 圆角大小
+    val bigRadius = 20.dp;// 圆角大小
     val superRadius = 30.sp;// 加大版圆角
     val minBtnRadius = 5.sp;// 小圆角
     val middleBtnWidth = 70.sp;// 中等按钮宽度
@@ -36,5 +36,5 @@ object Size {
     val pageSize = 20.sp;// 每页显示大小
     val minPlayIcon = 80.sp;// 音乐播放器圈圈大小
     val lineHeight = 30.dp// 竖线高度
-    val lineWidth = 2.dp// 竖线宽度
+    val lineWidth = 3.dp// 竖线宽度
 }

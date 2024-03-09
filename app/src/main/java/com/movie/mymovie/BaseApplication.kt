@@ -7,8 +7,8 @@ import com.movie.mymovie.utils.SharedPreferencesUtils
 
 class BaseApplication : Application() {
 
-    var token: String = "";
-    var userEntity: UserEntity? = null
+    var token: String = ""
+    var userEntity: UserEntity = UserEntity()
 
     override fun onCreate() {
         super.onCreate()

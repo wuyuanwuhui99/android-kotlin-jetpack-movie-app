@@ -39,7 +39,7 @@ fun SearchComponent (
                 .size(Size.middleAvater, Size.middleAvater)
                 .clip(RoundedCornerShape(Size.middleAvater)),
             painter = rememberImagePainter(
-                data = Api.HOST + BaseApplication.getInstance().userEntity?.avater,
+                data = Api.HOST + BaseApplication.getInstance().userEntity.avater,
                 builder = {
                     transition(CrossfadeTransition())
                 }

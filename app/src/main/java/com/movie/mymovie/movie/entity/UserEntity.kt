@@ -1,19 +1,19 @@
 package com.movie.mymovie.movie.entity
 
 class UserEntity {
-    var userId: String? = null
-    var createDate: String? = null
-    var updateDate: String? = null
-    var username: String? = null
-    var telephone: String? = null
-    var email: String? = null
-    var avater: String? = null
-    var birthday: String? = null
-    var sex: String? = null
-    var role: String? = null
-    var sign: String? = null
-    var password: String? = null
-    var region: String? = null
+    var userId: String = ""
+    var createDate: String = ""
+    var updateDate: String = ""
+    var username: String = ""
+    var telephone: String = ""
+    var email: String = ""
+    var avater: String = ""
+    var birthday: String = ""
+    var sex: String = ""
+    var role: String = ""
+    var sign: String = ""
+    var password: String = ""
+    var region: String = ""
     override fun toString(): String {
         return "UserEntity{" +
                 "userId='" + userId + '\'' +
