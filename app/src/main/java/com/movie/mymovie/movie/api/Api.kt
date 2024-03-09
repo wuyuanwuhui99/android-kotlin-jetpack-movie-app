@@ -1,7 +1,7 @@
 package com.movie.mymovie.movie.api
 
 object Api {
-    const val HOST = "http://192.168.0.4:5001"
+    const val HOST = "http://192.168.0.5:5001";
 
     //查询所有大分类
     const val GETUSERDATA = "/service/user/getUserData"

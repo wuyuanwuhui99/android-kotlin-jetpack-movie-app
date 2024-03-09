@@ -30,7 +30,7 @@ import retrofit2.Response
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CategoryComponent (
+fun MovieListComponent (
     movieList:Array<MovieEntity>,
     direction:String = "horizontal"
 ){

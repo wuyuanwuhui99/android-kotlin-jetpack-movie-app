@@ -46,13 +46,10 @@ fun Banner(
         LaunchedEffect(Unit){
             categoryListService.enqueue(object : Callback<ResultEntity> {
                 override fun onResponse(call: Call<ResultEntity>, response: Response<ResultEntity>) {
-                    val movieEntityLists = JSON.parseArray(
+                    movieEntityList.addAll(JSON.parseArray(
                         JSON.toJSONString(response.body()?.data ?: ""),
                         MovieEntity::class.java
-                    ).subList(0,5)
-                    for (movieEntity in movieEntityLists){
-                        movieEntityList.add(movieEntity)
-                    }
+                    ).subList(0,5))
                 }
 
                 override fun onFailure(call: Call<ResultEntity>, t: Throwable) {

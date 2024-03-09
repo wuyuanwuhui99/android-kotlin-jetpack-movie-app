@@ -1,6 +1,8 @@
 package com.movie.mymovie.movie.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -9,6 +11,7 @@ import com.alibaba.fastjson.JSON
 import com.movie.mymovie.http.RequestUtils
 import com.movie.mymovie.http.ResultEntity
 import com.movie.mymovie.movie.entity.MovieEntity
+import com.movie.mymovie.ui.theme.Color
 import com.movie.mymovie.ui.theme.Size
 import com.movie.mymovie.ui.theme.Style
 import retrofit2.Call
@@ -23,34 +26,27 @@ fun CategoryComponent (
     Column(
         modifier = Style.boxDecoration
     ) {
-        val isInit = remember { mutableStateOf(false) }
         val movieEntityList = remember { mutableStateListOf<MovieEntity>() }
-        if(isInit.value){
-            TitleComponent(title = category)
-
-        }else {
+        TitleComponent(title = category)
+        LaunchedEffect(Unit) {
             val categoryListService: Call<ResultEntity> =
                 RequestUtils.instance.getCategoryList(category, classify)
-            LaunchedEffect(Unit) {
-                categoryListService.enqueue(object : Callback<ResultEntity> {
-                    override fun onResponse(
-                        call: Call<ResultEntity>,
-                        response: Response<ResultEntity>
-                    ) {
-                        val movieEntityLists = JSON.parseArray(
-                            JSON.toJSONString(response.body()?.data ?: ""),
-                            MovieEntity::class.java
-                        ).subList(0, 5)
-                        for (movieEntity in movieEntityLists) {
-                            movieEntityList.add(movieEntity)
-                        }
-                    }
+            categoryListService.enqueue(object : Callback<ResultEntity> {
+                override fun onResponse(
+                    call: Call<ResultEntity>,
+                    response: Response<ResultEntity>
+                ) {
+                    movieEntityList.addAll(JSON.parseArray(
+                        JSON.toJSONString(response.body()?.data ?: ""),
+                        MovieEntity::class.java
+                    ))
+                }
 
-                    override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
-                        println("错误")
-                    }
-                })
-            }
+                override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
+                    println("错误")
+                }
+            })
+
         }
     }
 }
