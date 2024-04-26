@@ -7,7 +7,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.movie.mymovie"
+        applicationId "com.player"
         minSdk 21
         targetSdk 33
         versionCode 1
