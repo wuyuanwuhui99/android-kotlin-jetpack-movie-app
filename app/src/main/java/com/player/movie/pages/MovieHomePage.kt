@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.alibaba.fastjson.JSON
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
+import com.player.model.UserViewModel
 import com.player.movie.component.Banner
 import com.player.movie.component.CategoryComponent
 import com.player.movie.component.ClassifyComponent
@@ -25,24 +26,23 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun MovieHomePage() {
-
+fun MovieHomePage(userViewModel:UserViewModel) {
     MymovieTheme {
         LazyColumn(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start=Size.containerPadding, end = Size.containerPadding)
+                .padding(start = Size.containerPadding, end = Size.containerPadding)
                 .scrollable(
                     state = rememberScrollState(0),
-                    orientation= Orientation.Vertical
+                    orientation = Orientation.Vertical
                 )
         ) {
             item {
                 Spacer(modifier = Modifier
                     .height(Size.containerPadding))
-                SearchComponent(classify = "电影")
+                SearchComponent(userViewModel,classify = "电影")
                 Spacer(modifier = Modifier
                     .height(Size.containerPadding))
                 Banner("轮播","电影")

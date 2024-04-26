@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.alibaba.fastjson.JSON
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
+import com.player.model.UserViewModel
 import com.player.movie.component.Banner
 import com.player.movie.component.CategoryComponent
 import com.player.movie.component.SearchComponent
@@ -22,10 +23,8 @@ import com.player.theme.Size
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 @Composable
-fun MoviePage() {
-
+fun MoviePage(userViewModel: UserViewModel) {
     MymovieTheme {
         LazyColumn(
             horizontalAlignment = Alignment.Start,
@@ -41,7 +40,7 @@ fun MoviePage() {
             item {
                 Spacer(modifier = Modifier
                     .height(Size.containerPadding))
-                SearchComponent(classify = "电影")
+                SearchComponent(userViewModel,classify = "电影")
                 Spacer(modifier = Modifier
                     .height(Size.containerPadding))
                 Banner("轮播","电影")

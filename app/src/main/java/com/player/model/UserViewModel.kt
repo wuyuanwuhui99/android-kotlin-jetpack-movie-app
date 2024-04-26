@@ -1,6 +1,7 @@
 package com.player.model
 
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.player.movie.entity.UserEntity
 
@@ -19,20 +20,19 @@ class UserViewModel : ViewModel() {
     val password  = mutableStateOf("")
     val region  = mutableStateOf("")
 
-    @JvmName("setUserEntity1")
     fun setUserEntity(userEntity: UserEntity){
-        userId.value = userEntity.userId.toString();
-        createDate.value = userEntity.createDate.toString()
-        updateDate.value = userEntity.updateDate.toString()
-        username.value = userEntity.username.toString()
-        telephone.value = userEntity.telephone.toString()
-        email.value = userEntity.email.toString()
-        avater.value = userEntity.avater.toString()
-        birthday.value = userEntity.birthday.toString()
-        sex.value = userEntity.sex.toString()
-        role.value = userEntity.role.toString()
-        sign.value = userEntity.sign.toString()
-        password.value = userEntity.password.toString()
-        region.value = userEntity.region.toString()
+        userId.value = userEntity.userId;
+        createDate.value = userEntity.createDate
+        updateDate.value = userEntity.updateDate
+        username.value = userEntity.username
+        telephone.value = userEntity.telephone
+        email.value = userEntity.email
+        avater.value = userEntity.avater
+        birthday.value = userEntity.birthday
+        sex.value = userEntity.sex
+        role.value = userEntity.role
+        sign.value = userEntity.sign
+        password.value = userEntity.password
+        region.value = userEntity.region
     }
 }

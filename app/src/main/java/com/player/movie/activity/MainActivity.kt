@@ -3,6 +3,7 @@ package com.player.movie.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -34,10 +35,10 @@ import retrofit2.Response
 import androidx.navigation.compose.rememberNavController
 import com.player.R
 import com.player.BaseApplication
-
+import com.player.model.UserViewModel
 class MainActivity : ComponentActivity() {
     val isInit: MutableState<Boolean> = mutableStateOf(false)
-
+    private val viewModel: UserViewModel by viewModels()
     @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +49,7 @@ class MainActivity : ComponentActivity() {
                     Surface(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        BottomNavigationScreen()
+                        BottomNavigationScreen(viewModel)
                     }
                 }
             }
@@ -70,11 +71,13 @@ class MainActivity : ComponentActivity() {
                     BaseApplication.getInstance().token = body.token
                 }
                 if (body != null) {
-                    BaseApplication.getInstance().userEntity=
-                        gson.fromJson(
-                            gson.toJson(body.data),
-                            UserEntity::class.java
-                        )
+                    val userEntity = gson.fromJson(
+                        gson.toJson(body.data),
+                        UserEntity::class.java
+                    )
+                    BaseApplication.getInstance().userEntity = userEntity
+
+                    viewModel.setUserEntity(userEntity)
                     SharedPreferencesUtils.setParam(
                         this@MainActivity,
                         "token",
@@ -93,7 +96,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun BottomNavigationScreen() {
+fun BottomNavigationScreen(viewModel: UserViewModel) {
     val navController = rememberNavController()
     val items = listOf(
         NavigationItem.Home,
@@ -161,16 +164,16 @@ fun BottomNavigationScreen() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(NavigationItem.Home.route) {
-                MovieHomePage()
+                MovieHomePage(viewModel)
             }
             composable(NavigationItem.Movie.route) {
-                MoviePage()
+                MoviePage(viewModel)
             }
             composable(NavigationItem.TV.route) {
-                TVPage()
+                TVPage(viewModel)
             }
             composable(NavigationItem.My.route) {
-                MyPage()
+                MyPage(viewModel)
             }
         }
     }
