@@ -1,4 +1,4 @@
-package com.player.movie.activity
+package com.player.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,10 +21,6 @@ import com.google.gson.Gson
 import com.player.movie.entity.UserEntity
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
-import com.player.movie.pages.MovieHomePage
-import com.player.movie.pages.MoviePage
-import com.player.movie.pages.MyPage
-import com.player.movie.pages.TVPage
 import com.player.theme.Color;
 import com.player.theme.MymovieTheme
 import com.player.theme.Size;
@@ -36,6 +32,8 @@ import androidx.navigation.compose.rememberNavController
 import com.player.R
 import com.player.BaseApplication
 import com.player.model.UserViewModel
+import com.player.movie.screen.*
+
 class MainActivity : ComponentActivity() {
     val isInit: MutableState<Boolean> = mutableStateOf(false)
     private val viewModel: UserViewModel by viewModels()
@@ -164,16 +162,19 @@ fun BottomNavigationScreen(viewModel: UserViewModel) {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(NavigationItem.Home.route) {
-                MovieHomePage(viewModel)
+                MovieHomeScreen(viewModel,navController)
             }
             composable(NavigationItem.Movie.route) {
-                MoviePage(viewModel)
+                MovieScreen(viewModel,navController)
             }
             composable(NavigationItem.TV.route) {
-                TVPage(viewModel)
+                TVScreen(viewModel,navController)
             }
             composable(NavigationItem.My.route) {
-                MyPage(viewModel)
+                MyScreen(viewModel,navController)
+            }
+            composable(RouteList.MovieDetailScreen.description) {
+                MovieDetailScreen(navController)
             }
         }
     }
@@ -184,4 +185,10 @@ sealed class NavigationItem(val route: String, val title: String, val selectItem
     object Movie : NavigationItem("movie", "电影", R.mipmap.icon_movie_active, R.mipmap.icon_movie)
     object TV : NavigationItem("tv", "电视剧", R.mipmap.icon_tv_active, R.mipmap.icon_tv)
     object My : NavigationItem("my", "我的", R.mipmap.icon_user_active, R.mipmap.icon_user)
+}
+
+// 路由列表
+// 可以用来关联一个导航标题名称
+enum class RouteList(val description: String) {
+    MovieDetailScreen("MovieDetailScreen"),
 }

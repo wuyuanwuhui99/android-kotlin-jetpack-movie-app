@@ -1,4 +1,4 @@
-package com.player.movie.pages
+package com.player.movie.screen
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 import com.alibaba.fastjson.JSON
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
@@ -23,9 +24,8 @@ import com.player.theme.Size
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 @Composable
-fun TVPage(userViewModel: UserViewModel) {
+fun MovieScreen(userViewModel: UserViewModel,navController: NavHostController) {
     MymovieTheme {
         LazyColumn(
             horizontalAlignment = Alignment.Start,
@@ -41,10 +41,10 @@ fun TVPage(userViewModel: UserViewModel) {
             item {
                 Spacer(modifier = Modifier
                     .height(Size.containerPadding))
-                SearchComponent(userViewModel,classify = "电视剧")
+                SearchComponent(userViewModel,classify = "电影")
                 Spacer(modifier = Modifier
                     .height(Size.containerPadding))
-                Banner("轮播","电视剧")
+                Banner("轮播","电影")
                 Divider(
                     color = Color.Transparent,
                     modifier = Modifier
@@ -53,7 +53,7 @@ fun TVPage(userViewModel: UserViewModel) {
                 val allCategoryLists = remember {mutableStateListOf<CategoryEntity>()}
                 LaunchedEffect(Unit) {
                     val allCategoryListService: Call<ResultEntity> =
-                        RequestUtils.movieInstance.getAllCategoryListByPageName("电视剧")
+                        RequestUtils.movieInstance.getAllCategoryListByPageName("电影")
                     allCategoryListService.enqueue(object : Callback<ResultEntity> {
                         override fun onResponse(
                             call: Call<ResultEntity>,
@@ -75,7 +75,7 @@ fun TVPage(userViewModel: UserViewModel) {
                 for (categoryItem in allCategoryLists){
                     Spacer(modifier = Modifier
                         .height(Size.containerPadding))
-                    CategoryComponent(category=categoryItem.category,classify=categoryItem.classify)
+                    CategoryComponent(category=categoryItem.category,classify=categoryItem.classify,navController = navController)
                 }
                 Spacer(modifier = Modifier
                     .height(Size.containerPadding))

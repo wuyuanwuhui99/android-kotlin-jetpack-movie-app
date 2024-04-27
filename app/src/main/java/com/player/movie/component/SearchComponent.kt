@@ -1,8 +1,5 @@
 package com.player.movie.component
 
-import android.annotation.SuppressLint
-import androidx.activity.viewModels
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,23 +7,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil.compose.rememberImagePainter
-import coil.transition.CrossfadeTransition
 import com.alibaba.fastjson.JSON
-import com.player.BaseApplication
-import com.player.constant.Constant
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
 import com.player.model.UserViewModel
-import com.player.movie.activity.MainActivity
 import com.player.movie.entity.MovieEntity
 import com.player.theme.Color
 import com.player.theme.Size

@@ -1,4 +1,4 @@
-package com.player.movie.pages
+package com.player.movie.screen
 
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.Orientation
@@ -23,6 +23,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transition.CrossfadeTransition
 import com.alibaba.fastjson.JSON
@@ -43,7 +44,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun MyPage(userViewModel: UserViewModel) {
+fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
     val mainTextStyle = TextStyle(fontWeight = FontWeight.Bold, fontSize = Size.bigFontSize)
     val subTextStyle = TextStyle(color = Color.disableColor)
     MymovieTheme {

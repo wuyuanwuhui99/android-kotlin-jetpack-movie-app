@@ -2,6 +2,7 @@ package com.player.movie.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -12,7 +13,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import coil.transition.CrossfadeTransition
 import com.alibaba.fastjson.JSON
@@ -29,7 +33,8 @@ import retrofit2.Response
 @Composable
 fun CategoryComponent(
     category: String,
-    classify: String
+    classify: String,
+    navController: NavHostController
 ) {
     Column(
         modifier = Style.boxDecoration
@@ -48,7 +53,14 @@ fun CategoryComponent(
                 var index: Int = 0;
                 for (movieEntity in movieEntityList) {
                     index++;
-                    Column() {
+                    Column(modifier = Modifier.pointerInput(Unit) {
+                        detectTapGestures(
+                            // 点击事件
+                            onTap = {
+                                navController.navigate("MovieDetailScreen")
+                            }
+                        )
+                    }) {
                         Image(
                             contentScale = ContentScale.FillHeight,
                             modifier = Modifier
@@ -97,7 +109,6 @@ fun CategoryComponent(
                     println("错误")
                 }
             })
-
         }
     }
 }
