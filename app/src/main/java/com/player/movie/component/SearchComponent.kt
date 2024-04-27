@@ -43,19 +43,8 @@ fun SearchComponent (
     Row(
         modifier = Style.boxDecoration
     ) {
-        var keyword = remember { mutableStateOf<String>("") }
-        Image(
-            modifier = Modifier
-                .size(Size.middleAvater, Size.middleAvater)
-                .clip(RoundedCornerShape(Size.middleAvater)),
-            painter = rememberImagePainter(
-                data = Constant.HOST + userViewModel.avater.value,
-                builder = {
-                    transition(CrossfadeTransition())
-                }
-            ),
-            contentDescription = null
-        )
+        var keyword = remember { mutableStateOf("") }
+        AvaterComponent(userViewModel,Size.middleAvater)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
@@ -72,7 +61,7 @@ fun SearchComponent (
                             JSON.toJSONString(response.body()?.data ?: ""),
                             MovieEntity::class.java
                         )
-                        keyword.value = movieEntity.movieName.toString()
+                        keyword.value = movieEntity.movieName
                     }
 
                     override fun onFailure(call: Call<ResultEntity>, t: Throwable) {

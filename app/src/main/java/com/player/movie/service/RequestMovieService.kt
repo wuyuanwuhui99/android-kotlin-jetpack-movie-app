@@ -22,11 +22,11 @@ interface RequestMovieService {
     @GET(Api.GETKEYWORD)
     fun getKeyWord(@Query("classify") classify: String): Call<ResultEntity>
 
-    @get:GET(Api.GETUSERMSG)
-    val userMsg: Call<ResultEntity?>?
+    @GET(Api.GETUSERMSG)
+    fun getUserMsg(): Call<ResultEntity>
 
-    @get:GET(Api.GETPLAYRECORD)
-    val playRecord: Call<ResultEntity?>?
+    @GET(Api.GETPLAYRECORD)
+    fun getPlayRecord(): Call<ResultEntity>
 
     @GET(Api.GETSTAR)
     fun getStarList(@Path("movieId") movieId: String?): Call<ResultEntity?>?

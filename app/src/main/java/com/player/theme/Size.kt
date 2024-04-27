@@ -20,7 +20,7 @@ object Size {
     val playIcon = 25.sp;// 中等图标
     val normalFontSize = 12.sp;// 正常字体大小
     val navigationIcon = 30.sp;// 导航图标
-    val smallIcon = 20.sp;// 中等图标
+    val smallIcon = 20.dp;// 中等图标
     val miniIcon = 15.sp;// 超小图片
     val smallMargin = 10.dp;//小边距
     val miniMargin = 5.dp;// 超小边距
@@ -28,7 +28,7 @@ object Size {
     val middleFontSize = 16.sp;//常规字体
     val bigFontSize = 20.sp;// 大标题字体
     val middleAvater = 40.dp;// 中等头像
-    val bigAvater = 60.sp;// 大头像
+    val bigAvater = 60.dp;// 大头像
     val borderWidth = 1.sp;// 边框大小
     val buttonHeight = 40.sp;//按钮大小
     val crossAxisCount = 5.sp;// 网格布局每行元素个数
