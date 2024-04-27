@@ -26,10 +26,10 @@ interface RequestMovieService {
     fun getUserMsg(): Call<ResultEntity>
 
     @GET(Api.GETPLAYRECORD)
-    fun getPlayRecord(): Call<ResultEntity>
+    fun getPlayRecord(@Query("pageNum") pageNum: Int,@Query("pageSize") pageSize: Int): Call<ResultEntity>
 
-    @GET(Api.GETSTAR)
-    fun getStarList(@Path("movieId") movieId: String?): Call<ResultEntity?>?
+    @GET(Api.GETFAVORITE)
+    fun getFavoriteList(@Query("pageNum") pageNum: Int,@Query("pageSize") pageSize: Int): Call<ResultEntity>
 
     @GET(Api.GETYOURLIKES)
     fun getYourLikes(

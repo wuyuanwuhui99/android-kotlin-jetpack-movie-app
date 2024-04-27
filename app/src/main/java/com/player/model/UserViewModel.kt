@@ -1,7 +1,6 @@
 package com.player.model
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.player.movie.entity.UserEntity
 
