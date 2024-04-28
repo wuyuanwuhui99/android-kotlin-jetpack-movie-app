@@ -57,7 +57,8 @@ fun CategoryComponent(
                         detectTapGestures(
                             // 点击事件
                             onTap = {
-                                navController.navigate("movieDetail/"+movieEntity.id.toString())
+                                val data:String = JSON.toJSONString(movieEntity)
+                                navController.navigate("movieDetail?data=$data")
                             }
                         )
                     }) {

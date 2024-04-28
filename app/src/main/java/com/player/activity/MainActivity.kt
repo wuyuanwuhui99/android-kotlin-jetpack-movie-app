@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -29,9 +30,12 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.alibaba.fastjson.JSON
 import com.player.R
 import com.player.BaseApplication
 import com.player.model.UserViewModel
+import com.player.movie.entity.MovieEntity
 import com.player.movie.screen.*
 
 class MainActivity : ComponentActivity() {
@@ -180,13 +184,16 @@ fun BottomNavigationScreen(viewModel: UserViewModel) {
                 MyScreen(viewModel,navController)
                 showBottomNavigation.value = true
             }
-            composable(RouteList.MovieDetailScreen.description) { backStackEntry ->
-                val id = backStackEntry.arguments?.getInt("id")
-                // 在这里获取用户数据
-//                if (id != null) {
-//                    MovieDetailScreen(navController,id)
-//                }
-                MovieDetailScreen(navController,id)
+            composable(RouteList.MovieDetailScreen.description,listOf(
+                // 设置默认值
+                navArgument("data") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )) { backStackEntry ->
+                val data = backStackEntry.arguments?.getString("data")
+                val movieEntity = JSON.parseObject(data,MovieEntity::class.java)
+                MovieDetailScreen(navController,movieEntity)
                 showBottomNavigation.value = false
             }
         }
@@ -203,5 +210,5 @@ sealed class NavigationItem(val route: String, val title: String, val selectItem
 // 路由列表
 // 可以用来关联一个导航标题名称
 enum class RouteList(val description: String) {
-    MovieDetailScreen("movieDetail/{id}"),
+    MovieDetailScreen("movieDetail?data={data}"),
 }
