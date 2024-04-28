@@ -95,6 +95,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun BottomNavigationScreen(viewModel: UserViewModel) {
+    val showBottomNavigation = remember { mutableStateOf(true) }
     val navController = rememberNavController()
     val items = listOf(
         NavigationItem.Home,
@@ -105,53 +106,55 @@ fun BottomNavigationScreen(viewModel: UserViewModel) {
 
     Scaffold(
         bottomBar = {
-            BottomNavigation (
-                backgroundColor = Color.colorWhite,
-            ){
-                var bottomSelectedState by remember { mutableStateOf(0) }
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry?.destination
-                items.forEachIndexed { index,item ->
-                    BottomNavigationItem(
-                        icon = {
-                            Image(
-                                painter = painterResource(
-                                    id = if (bottomSelectedState == index) {
-                                        item.selectItemRes
+            if(showBottomNavigation.value){
+                BottomNavigation (
+                    backgroundColor = Color.colorWhite,
+                ){
+                    var bottomSelectedState by remember { mutableStateOf(0) }
+                    val navBackStackEntry by navController.currentBackStackEntryAsState()
+                    val currentDestination = navBackStackEntry?.destination
+                    items.forEachIndexed { index,item ->
+                        BottomNavigationItem(
+                            icon = {
+                                Image(
+                                    painter = painterResource(
+                                        id = if (bottomSelectedState == index) {
+                                            item.selectItemRes
+                                        } else {
+                                            item.unSelectItemRes
+                                        }
+                                    ),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(Size.middleIcon)
+                                        .padding(Size.miniMargin)
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = item.title,
+                                    fontWeight = FontWeight.Normal,
+                                    fontSize = Size.normalFontSize,
+                                    color = if (bottomSelectedState == index) {
+                                        Color.selectedColor
                                     } else {
-                                        item.unSelectItemRes
+                                        Color.normalColor
                                     }
-                                ),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .size(Size.middleIcon)
-                                    .padding(Size.miniMargin)
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = item.title,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = Size.normalFontSize,
-                                color = if (bottomSelectedState == index) {
-                                    Color.selectedColor
-                                } else {
-                                    Color.normalColor
+                                )
+                            },
+                            selected = currentDestination?.hierarchy?.any{it.route == item.route} == true,
+                            onClick = {
+                                bottomSelectedState = index;
+                                navController.navigate(item.route) {
+                                    popUpTo(navController.graph.findStartDestination().id) {
+                                        saveState = true
+                                    }
+                                    launchSingleTop = true
+                                    restoreState = true
                                 }
-                            )
-                        },
-                        selected = currentDestination?.hierarchy?.any{it.route == item.route} == true,
-                        onClick = {
-                            bottomSelectedState = index;
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
                             }
-                        }
-                    )
+                        )
+                    }
                 }
             }
         }
@@ -163,18 +166,28 @@ fun BottomNavigationScreen(viewModel: UserViewModel) {
         ) {
             composable(NavigationItem.Home.route) {
                 MovieHomeScreen(viewModel,navController)
+                showBottomNavigation.value = true
             }
             composable(NavigationItem.Movie.route) {
                 MovieScreen(viewModel,navController)
+                showBottomNavigation.value = true
             }
             composable(NavigationItem.TV.route) {
                 TVScreen(viewModel,navController)
+                showBottomNavigation.value = true
             }
             composable(NavigationItem.My.route) {
                 MyScreen(viewModel,navController)
+                showBottomNavigation.value = true
             }
-            composable(RouteList.MovieDetailScreen.description) {
-                MovieDetailScreen(navController)
+            composable(RouteList.MovieDetailScreen.description) { backStackEntry ->
+                val id = backStackEntry.arguments?.getInt("id")
+                // 在这里获取用户数据
+//                if (id != null) {
+//                    MovieDetailScreen(navController,id)
+//                }
+                MovieDetailScreen(navController,id)
+                showBottomNavigation.value = false
             }
         }
     }
@@ -190,5 +203,5 @@ sealed class NavigationItem(val route: String, val title: String, val selectItem
 // 路由列表
 // 可以用来关联一个导航标题名称
 enum class RouteList(val description: String) {
-    MovieDetailScreen("MovieDetailScreen"),
+    MovieDetailScreen("movieDetail/{id}"),
 }

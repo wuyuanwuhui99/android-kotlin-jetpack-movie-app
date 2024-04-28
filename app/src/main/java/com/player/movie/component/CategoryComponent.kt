@@ -50,14 +50,14 @@ fun CategoryComponent(
                 .padding(top = Size.containerPadding)
         ) {
             item {
-                var index: Int = 0;
+                var index = 0
                 for (movieEntity in movieEntityList) {
-                    index++;
+                    index++
                     Column(modifier = Modifier.pointerInput(Unit) {
                         detectTapGestures(
                             // 点击事件
                             onTap = {
-                                navController.navigate("MovieDetailScreen")
+                                navController.navigate("movieDetail/"+movieEntity.id.toString())
                             }
                         )
                     }) {

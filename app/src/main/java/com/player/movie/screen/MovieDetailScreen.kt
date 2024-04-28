@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
 @Composable
-fun MovieDetailScreen(navController: NavHostController){
-    Text(text = "这是详情页")
+fun MovieDetailScreen(navController: NavHostController,id:Int?){
+    Text(text = id.toString())
 }
