@@ -1,6 +1,7 @@
 package com.player.movie.screen
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,8 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.player.R
 import com.player.model.UserViewModel
@@ -90,22 +89,12 @@ fun MainScreen(navController: NavHostController,viewModel: UserViewModel){
                     }
                 }
             ){ innerPadding ->
-                NavHost(
-                    navController = navController,
-                    startDestination = NavigationItem.Home.route,
-                    modifier = Modifier.padding(innerPadding)
-                ) {
-                    composable(NavigationItem.Home.route) {
-                        MovieHomeScreen(viewModel,navController)
-                    }
-                    composable(NavigationItem.Movie.route) {
-                        MovieScreen(viewModel,navController)
-                    }
-                    composable(NavigationItem.TV.route) {
-                        TVScreen(viewModel,navController)
-                    }
-                    composable(NavigationItem.My.route) {
-                        MyScreen(viewModel,navController)
+                Box{
+                    when(bottomSelectedState){
+                        0 -> MovieHomeScreen(viewModel,navController)
+                        1 -> MovieScreen(viewModel,navController)
+                        2 -> TVScreen(viewModel,navController)
+                        3 -> MyScreen(viewModel,navController)
                     }
                 }
             }
