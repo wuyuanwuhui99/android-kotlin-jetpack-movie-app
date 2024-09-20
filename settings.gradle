@@ -1,13 +1,22 @@
 pluginManagement {
     repositories {
+        maven{ url 'https://maven.aliyun.com/repository/public' }
+        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/'}
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/jcenter' }
+        maven { url 'https://dl.google.com/dl/android/maven2/' }
+        maven { url "https://www.jitpack.io" }
+
+        maven { url 'https://maven.aliyun.com/repository/google' }
+        maven { url 'https://maven.aliyun.com/repository/jcenter' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
         gradlePluginPortal()
         google()
         mavenCentral()
     }
     plugins {
-        id 'com.android.application' version '7.1.0-alpha11'
-        id 'com.android.library' version '7.1.0-alpha11'
-        id 'org.jetbrains.kotlin.android' version '1.5.21'
+        id 'com.android.application' version '7.3.0'
+        id 'com.android.library' version '7.3.0'
+        id 'org.jetbrains.kotlin.android' version '1.6.21'
     }
 }
 dependencyResolutionManagement {

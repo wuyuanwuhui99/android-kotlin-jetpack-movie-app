@@ -7,7 +7,7 @@
         <option name="testRunner" value="GRADLE" />
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="D:/gradle-6.8.3" />
+        <option name="gradleHome" value="D:/gradle-7.2" />
         <option name="gradleJvm" value="11 (3)" />
         <option name="modules">
           <set>
@@ -15,7 +15,6 @@
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>
