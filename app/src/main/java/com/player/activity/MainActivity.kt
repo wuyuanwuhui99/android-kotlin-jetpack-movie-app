@@ -24,61 +24,21 @@ import com.player.model.UserViewModel
 import com.player.router.NavHostApp
 
 class MainActivity : ComponentActivity() {
-    val isInit: MutableState<Boolean> = mutableStateOf(false)
     private val viewModel: UserViewModel by viewModels()
     @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        getUserData()
         setContent {
-            if(isInit.value){
-                MymovieTheme {
-                    Surface(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Scaffold { innerPadding ->
-                            NavHostApp(innerPadding,viewModel)
-                        }
+            MymovieTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    Scaffold { innerPadding ->
+                        NavHostApp(innerPadding,viewModel)
                     }
                 }
             }
         }
     }
 
-    /**
-     * @author: wuwenqiang
-     * @description: 获取用户信息
-     * @date: 2023-12-04 15:59
-     */
-    private fun getUserData() {
-        val userData: Call<ResultEntity> = RequestUtils.movieInstance.userData
-        userData.enqueue(object : Callback<ResultEntity> {
-            override fun onResponse(call: Call<ResultEntity>, response: Response<ResultEntity>) {
-                val gson = Gson()
-                val body: ResultEntity? = response.body()
-                if (body != null) {
-                    BaseApplication.getInstance().token = body.token
-                }
-                if (body != null) {
-                    val userEntity = gson.fromJson(
-                        gson.toJson(body.data),
-                        UserEntity::class.java
-                    )
-                    BaseApplication.getInstance().userEntity = userEntity
-
-                    viewModel.setUserEntity(userEntity)
-                    SharedPreferencesUtils.setParam(
-                        this@MainActivity,
-                        "token",
-                        body.token
-                    )
-                }
-                isInit.value = true;
-            }
-
-            override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
-                println(t.message)
-            }
-        })
-    }
 }

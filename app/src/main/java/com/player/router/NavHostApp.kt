@@ -12,6 +12,8 @@ import androidx.navigation.navArgument
 import com.alibaba.fastjson.JSON
 import com.player.model.UserViewModel
 import com.player.movie.entity.MovieEntity
+import com.player.movie.screen.LaunchScreen
+import com.player.movie.screen.LoginScreen
 import com.player.movie.screen.MainScreen
 import com.player.movie.screen.MovieDetailScreen
 
@@ -20,8 +22,14 @@ fun NavHostApp(innerPadding: PaddingValues, viewModel: UserViewModel){
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = RouteList.MainScreen.description,
+        startDestination = RouteList.LaunchScreen.description,
         modifier = Modifier.padding(innerPadding)){
+        composable(RouteList.LaunchScreen.description){
+            LaunchScreen(navController,viewModel)
+        }
+        composable(RouteList.LoginScreen.description){
+            LoginScreen(navController,viewModel)
+        }
         composable(RouteList.MainScreen.description){
             MainScreen(navController,viewModel)
         }
@@ -43,6 +51,8 @@ fun NavHostApp(innerPadding: PaddingValues, viewModel: UserViewModel){
 // 路由列表
 // 可以用来关联一个导航标题名称
 enum class RouteList(val description: String) {
-    MainScreen("mainScreen"),
+    LaunchScreen("LaunchScreen"),
+    LoginScreen("LoginScreen"),
+    MainScreen("MainScreen"),
     MovieDetailScreen("movieDetail?data={data}"),
 }
