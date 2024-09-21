@@ -15,7 +15,7 @@ import coil.compose.rememberImagePainter
 import coil.transition.CrossfadeTransition
 import com.player.constant.Constant
 import com.player.movie.entity.MovieEntity
-import com.player.theme.Size
+import com.player.theme.ThemeSize
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -26,12 +26,12 @@ fun MovieListComponent (
     if(direction.equals("horizontal")){
         Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
             for (movieEntity in movieList){
-                Column(modifier = Modifier.width(Size.movieWidth)) {
+                Column(modifier = Modifier.width(ThemeSize.movieWidth)) {
                     Image(
                         modifier = Modifier
-                            .width(Size.movieWidth)
-                            .height(Size.movieHeight)
-                            .clip(RoundedCornerShape(Size.middleRadius)),
+                            .width(ThemeSize.movieWidth)
+                            .height(ThemeSize.movieHeight)
+                            .clip(RoundedCornerShape(ThemeSize.middleRadius)),
                         painter = rememberImagePainter(
                             data = Constant.HOST + movieEntity.localImg,
                             builder = {
@@ -46,15 +46,15 @@ fun MovieListComponent (
     }else{
         LazyVerticalGrid(
             cells = GridCells.Fixed(3),
-            contentPadding = PaddingValues(Size.smallMargin)
+            contentPadding = PaddingValues(ThemeSize.smallMargin)
         ){
             items(movieList.size) {
                 Column() {
                     Image(
                         modifier = Modifier
-                            .width(Size.movieWidth)
-                            .height(Size.movieHeight)
-                            .clip(RoundedCornerShape(Size.middleRadius)),
+                            .width(ThemeSize.movieWidth)
+                            .height(ThemeSize.movieHeight)
+                            .clip(RoundedCornerShape(ThemeSize.middleRadius)),
                         painter = rememberImagePainter(
                             data = Constant.HOST + movieList[it].localImg,
                             builder = {

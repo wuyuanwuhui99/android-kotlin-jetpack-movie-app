@@ -24,8 +24,8 @@ import com.player.constant.Constant
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
 import com.player.movie.entity.MovieEntity
-import com.player.theme.Size
-import com.player.theme.Style
+import com.player.theme.ThemeSize
+import com.player.theme.ThemeStyle
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -37,7 +37,7 @@ fun CategoryComponent(
     navController: NavHostController
 ) {
     Column(
-        modifier = Style.boxDecoration
+        modifier = ThemeStyle.boxDecoration
     ) {
         val movieEntityList = remember { mutableStateListOf<MovieEntity>() }
         TitleComponent(title = category)
@@ -47,7 +47,7 @@ fun CategoryComponent(
                     state = rememberScrollState(0),
                     orientation = Orientation.Horizontal
                 )
-                .padding(top = Size.containerPadding)
+                .padding(top = ThemeSize.containerPadding)
         ) {
             item {
                 var index = 0
@@ -65,9 +65,9 @@ fun CategoryComponent(
                         Image(
                             contentScale = ContentScale.FillHeight,
                             modifier = Modifier
-                                .height(Size.movieHeight)
-                                .width(Size.movieWidth)
-                                .clip(RoundedCornerShape(Size.middleRadius)),
+                                .height(ThemeSize.movieHeight)
+                                .width(ThemeSize.movieWidth)
+                                .clip(RoundedCornerShape(ThemeSize.middleRadius)),
                             contentDescription = null,
                             painter = rememberImagePainter(
                                 data = Constant.HOST + movieEntity.localImg,
@@ -75,7 +75,7 @@ fun CategoryComponent(
                                     transition(CrossfadeTransition())
                                 }
                             ))
-                        Spacer(modifier = Modifier.height(Size.smallMargin))
+                        Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
                         Text(
                             text = movieEntity.movieName,
                             modifier = Modifier
@@ -84,7 +84,7 @@ fun CategoryComponent(
                         )
                     }
                     if (movieEntityList.size != index) {
-                        Spacer(modifier = Modifier.width(Size.containerPadding))
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                     }
                 }
             }

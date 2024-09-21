@@ -35,38 +35,38 @@ import com.player.model.UserViewModel
 import com.player.movie.component.AvaterComponent
 import com.player.movie.entity.MovieEntity
 import com.player.movie.entity.UserMsgEntity
-import com.player.theme.Color
+import com.player.theme.ThemeColor
 import com.player.theme.MymovieTheme
-import com.player.theme.Size
-import com.player.theme.Style
+import com.player.theme.ThemeSize
+import com.player.theme.ThemeStyle
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
-    val mainTextStyle = TextStyle(fontWeight = FontWeight.Bold, fontSize = Size.bigFontSize)
-    val subTextStyle = TextStyle(color = Color.disableColor)
+fun MyScreen(userViewModel: UserViewModel,navController: NavHostController,value:PaddingValues) {
+    val mainTextStyle = TextStyle(fontWeight = FontWeight.Bold, fontSize = ThemeSize.bigFontSize)
+    val subTextStyle = TextStyle(color = ThemeColor.disableColor)
     MymovieTheme {
         LazyColumn(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = Size.containerPadding, end = Size.containerPadding)
+                .padding(start = ThemeSize.containerPadding, end = ThemeSize.containerPadding)
                 .scrollable(
                     state = rememberScrollState(0),
                     orientation = Orientation.Vertical
                 )
         ) {
             item {
-                Spacer(modifier = Modifier.height(Size.containerPadding))
+                Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                 Row(
-                    modifier = Style.boxDecoration,
+                    modifier = ThemeStyle.boxDecoration,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AvaterComponent(userViewModel, Size.bigAvater)
-                    Spacer(modifier = Modifier.width(Size.containerPadding))
+                    AvaterComponent(userViewModel, ThemeSize.bigAvater)
+                    Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                     Column(modifier = Modifier.weight(1F, true)) {
                         Text(text = userViewModel.username.value, style = mainTextStyle)
                         if ("" == userViewModel.sign.value) {
@@ -76,7 +76,7 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                     Image(
                         painter = painterResource(id = R.mipmap.icon_edit),
                         modifier = Modifier
-                            .size(Size.bigIcon),
+                            .size(ThemeSize.bigIcon),
                         contentDescription = ""
                     )
                 }
@@ -102,9 +102,9 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                             }
                         })
                 }
-                Spacer(modifier = Modifier.height(Size.containerPadding))
+                Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                 Row(
-                    modifier = Style.boxDecoration,
+                    modifier = ThemeStyle.boxDecoration,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column(
@@ -148,8 +148,8 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
             }
             item {
                 var isFoldRecord by remember { mutableStateOf(false) }
-                Spacer(modifier = Modifier.height(Size.containerPadding))
-                Column(modifier = Style.boxDecoration) {
+                Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
+                Column(modifier = ThemeStyle.boxDecoration) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.pointerInput(Unit) {
@@ -163,18 +163,18 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .size(Size.middleIcon, Size.middleIcon),
+                                .size(ThemeSize.middleIcon, ThemeSize.middleIcon),
                             painter = painterResource(id = R.mipmap.icon_play_record),
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(Size.containerPadding))
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                         Text(
                             text = stringResource(id = R.string.user_play_record_count),
                             modifier = Modifier.weight(1f)
                         )
                         Image(
                             modifier = Modifier
-                                .size(Size.smallIcon, Size.smallIcon)
+                                .size(ThemeSize.smallIcon, ThemeSize.smallIcon)
                                 .graphicsLayer(
                                     rotationZ = if (isFoldRecord) {
                                         0f
@@ -187,10 +187,10 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                         )
                     }
                     if(!isFoldRecord){
-                        Spacer(modifier = Modifier.height(Size.containerPadding))
+                        Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                         Divider(modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.colorBg)
+                            .background(ThemeColor.colorBg)
                             .height(1.dp))
                         val playRecordMovieList = remember { mutableStateListOf<MovieEntity>() }
                         LaunchedEffect(Unit) {
@@ -215,8 +215,8 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                                 })
                         }
                         if(playRecordMovieList.size == 0){
-                            Text(style = TextStyle(color = Color.disableColor, textAlign = TextAlign.Center),modifier = Modifier
-                                .padding(Size.containerPadding)
+                            Text(style = TextStyle(color = ThemeColor.disableColor, textAlign = TextAlign.Center),modifier = Modifier
+                                .padding(ThemeSize.containerPadding)
                                 .fillMaxWidth(),
                                 text = stringResource(id = R.string.no_data))
                         }else {
@@ -226,9 +226,9 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                                     Image(
                                         contentScale = ContentScale.FillHeight,
                                         modifier = Modifier
-                                            .width(Size.movieWidth)
-                                            .height(Size.movieWidth)
-                                            .clip(RoundedCornerShape(Size.middleRadius)),
+                                            .width(ThemeSize.movieWidth)
+                                            .height(ThemeSize.movieWidth)
+                                            .clip(RoundedCornerShape(ThemeSize.middleRadius)),
                                         painter = rememberImagePainter(data = if (playRecordMovieList[index].img == "") {
                                             playRecordMovieList[index].img
                                         } else {
@@ -246,8 +246,8 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
             }
             item {
                 var isFoldFavorite by remember { mutableStateOf(true) }
-                Spacer(modifier = Modifier.height(Size.containerPadding))
-                Column(modifier = Style.boxDecoration) {
+                Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
+                Column(modifier = ThemeStyle.boxDecoration) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.pointerInput(Unit) {
@@ -261,18 +261,18 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .size(Size.middleIcon, Size.middleIcon),
+                                .size(ThemeSize.middleIcon, ThemeSize.middleIcon),
                             painter = painterResource(id = R.mipmap.icon_collection),
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(Size.containerPadding))
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                         Text(
                             text = stringResource(id = R.string.user_favorite),
                             modifier = Modifier.weight(1f)
                         )
                         Image(
                             modifier = Modifier
-                                .size(Size.smallIcon, Size.smallIcon)
+                                .size(ThemeSize.smallIcon, ThemeSize.smallIcon)
                                 .graphicsLayer(
                                     rotationZ = if (isFoldFavorite) {
                                         0f
@@ -285,10 +285,10 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                         )
                     }
                     if(!isFoldFavorite){
-                        Spacer(modifier = Modifier.height(Size.containerPadding))
+                        Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                         Divider(modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.colorBg)
+                            .background(ThemeColor.colorBg)
                             .height(1.dp))
                         val favoriteMovieList = remember { mutableStateListOf<MovieEntity>() }
                         LaunchedEffect(Unit) {
@@ -314,8 +314,8 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                                 })
                         }
                         if(favoriteMovieList.size == 0){
-                            Text(style = TextStyle(color = Color.disableColor, textAlign = TextAlign.Center),modifier = Modifier
-                                .padding(Size.containerPadding)
+                            Text(style = TextStyle(color = ThemeColor.disableColor, textAlign = TextAlign.Center),modifier = Modifier
+                                .padding(ThemeSize.containerPadding)
                                 .fillMaxWidth(),
                                 text = stringResource(id = R.string.no_data))
                         }else {
@@ -325,9 +325,9 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                                     Image(
                                         contentScale = ContentScale.FillHeight,
                                         modifier = Modifier
-                                            .width(Size.movieWidth)
-                                            .height(Size.movieWidth)
-                                            .clip(RoundedCornerShape(Size.middleRadius)),
+                                            .width(ThemeSize.movieWidth)
+                                            .height(ThemeSize.movieWidth)
+                                            .clip(RoundedCornerShape(ThemeSize.middleRadius)),
                                         painter = rememberImagePainter(data = if (favoriteMovieList[index].img == "") {
                                             favoriteMovieList[index].img
                                         } else {
@@ -345,8 +345,8 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
             }
             item {
                 var isFoldView by remember { mutableStateOf(true) }
-                Spacer(modifier = Modifier.height(Size.containerPadding))
-                Column(modifier = Style.boxDecoration) {
+                Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
+                Column(modifier = ThemeStyle.boxDecoration) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.pointerInput(Unit) {
@@ -360,18 +360,18 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .size(Size.middleIcon, Size.middleIcon),
+                                .size(ThemeSize.middleIcon, ThemeSize.middleIcon),
                             painter = painterResource(id = R.mipmap.icon_record),
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(Size.containerPadding))
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                         Text(
                             text = stringResource(id = R.string.user_record),
                             modifier = Modifier.weight(1f)
                         )
                         Image(
                             modifier = Modifier
-                                .size(Size.smallIcon, Size.smallIcon)
+                                .size(ThemeSize.smallIcon, ThemeSize.smallIcon)
                                 .graphicsLayer(
                                     rotationZ = if (isFoldView) {
                                         0f
@@ -384,10 +384,10 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                         )
                     }
                     if(!isFoldView){
-                        Spacer(modifier = Modifier.height(Size.containerPadding))
+                        Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                         Divider(modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color.colorBg)
+                            .background(ThemeColor.colorBg)
                             .height(1.dp))
                         val viewMovieList = remember { mutableStateListOf<MovieEntity>() }
                         LaunchedEffect(Unit) {
@@ -413,8 +413,8 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                                 })
                         }
                         if(viewMovieList.size == 0){
-                            Text(style = TextStyle(color = Color.disableColor, textAlign = TextAlign.Center),modifier = Modifier
-                                .padding(Size.containerPadding)
+                            Text(style = TextStyle(color = ThemeColor.disableColor, textAlign = TextAlign.Center),modifier = Modifier
+                                .padding(ThemeSize.containerPadding)
                                 .fillMaxWidth(),
                                 text = stringResource(id = R.string.no_data))
                         }else {
@@ -424,9 +424,9 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                                     Image(
                                         contentScale = ContentScale.FillHeight,
                                         modifier = Modifier
-                                            .width(Size.movieWidth)
-                                            .height(Size.movieWidth)
-                                            .clip(RoundedCornerShape(Size.middleRadius)),
+                                            .width(ThemeSize.movieWidth)
+                                            .height(ThemeSize.movieWidth)
+                                            .clip(RoundedCornerShape(ThemeSize.middleRadius)),
                                         painter = rememberImagePainter(data = if (viewMovieList[index].img == "") {
                                             viewMovieList[index].img
                                         } else {
@@ -443,8 +443,8 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                 }
             }
             item {
-                Spacer(modifier = Modifier.height(Size.containerPadding))
-                Column(modifier = Style.boxDecoration) {
+                Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
+                Column(modifier = ThemeStyle.boxDecoration) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.pointerInput(Unit) {
@@ -458,28 +458,28 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .size(Size.middleIcon, Size.middleIcon),
+                                .size(ThemeSize.middleIcon, ThemeSize.middleIcon),
                             painter = painterResource(id = R.mipmap.icon_music),
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(Size.containerPadding))
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                         Text(
                             text = stringResource(id = R.string.user_music),
                             modifier = Modifier.weight(1f)
                         )
                         Image(
                             modifier = Modifier
-                                .size(Size.smallIcon, Size.smallIcon),// 应用旋转变换,
+                                .size(ThemeSize.smallIcon, ThemeSize.smallIcon),// 应用旋转变换,
                             painter = painterResource(id = R.mipmap.icon_arrow),
                             contentDescription = null,
                         )
                     }
-                    Spacer(modifier = Modifier.height(Size.containerPadding))
+                    Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                     Divider(modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color.colorBg)
+                        .background(ThemeColor.colorBg)
                         .height(1.dp))
-                    Spacer(modifier = Modifier.height(Size.containerPadding))
+                    Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.pointerInput(Unit) {
@@ -493,28 +493,28 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .size(Size.middleIcon, Size.middleIcon),
+                                .size(ThemeSize.middleIcon, ThemeSize.middleIcon),
                             painter = painterResource(id = R.mipmap.icon_talk),
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(Size.containerPadding))
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                         Text(
                             text = stringResource(id = R.string.user_movie_talk),
                             modifier = Modifier.weight(1f)
                         )
                         Image(
                             modifier = Modifier
-                                .size(Size.smallIcon, Size.smallIcon),// 应用旋转变换,
+                                .size(ThemeSize.smallIcon, ThemeSize.smallIcon),// 应用旋转变换,
                             painter = painterResource(id = R.mipmap.icon_arrow),
                             contentDescription = null,
                         )
                     }
-                    Spacer(modifier = Modifier.height(Size.containerPadding))
+                    Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                     Divider(modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color.colorBg)
+                        .background(ThemeColor.colorBg)
                         .height(1.dp))
-                    Spacer(modifier = Modifier.height(Size.containerPadding))
+                    Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.pointerInput(Unit) {
@@ -528,23 +528,25 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController) {
                     ) {
                         Image(
                             modifier = Modifier
-                                .size(Size.middleIcon, Size.middleIcon),
+                                .size(ThemeSize.middleIcon, ThemeSize.middleIcon),
                             painter = painterResource(id = R.mipmap.icon_app),
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(Size.containerPadding))
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                         Text(
                             text = stringResource(id = R.string.user_applet),
                             modifier = Modifier.weight(1f)
                         )
                         Image(
                             modifier = Modifier
-                                .size(Size.smallIcon, Size.smallIcon),// 应用旋转变换,
+                                .size(ThemeSize.smallIcon, ThemeSize.smallIcon),// 应用旋转变换,
                             painter = painterResource(id = R.mipmap.icon_arrow),
                             contentDescription = null,
                         )
                     }
                 }
+                Spacer(modifier = Modifier
+                    .height(value.calculateBottomPadding() + ThemeSize.containerPadding))
             }
         }
     }

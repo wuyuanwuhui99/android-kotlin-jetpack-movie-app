@@ -11,14 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.player.R
 import com.player.model.UserViewModel
-import com.player.theme.Color
+import com.player.theme.ThemeColor
 import com.player.theme.MymovieTheme
-import com.player.theme.Size
+import com.player.theme.ThemeSize
 
 @Composable
 fun MainScreen(navController: NavHostController,viewModel: UserViewModel){
@@ -39,7 +38,7 @@ fun MainScreen(navController: NavHostController,viewModel: UserViewModel){
             Scaffold(
                 bottomBar = {
                     BottomNavigation (
-                        backgroundColor = Color.colorWhite,
+                        backgroundColor = ThemeColor.colorWhite,
                     ){
 
                         val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -57,44 +56,37 @@ fun MainScreen(navController: NavHostController,viewModel: UserViewModel){
                                         ),
                                         contentDescription = null,
                                         modifier = Modifier
-                                            .size(Size.middleIcon)
-                                            .padding(Size.miniMargin)
+                                            .size(ThemeSize.middleIcon)
+                                            .padding(ThemeSize.miniMargin)
                                     )
                                 },
                                 label = {
                                     Text(
                                         text = item.title,
                                         fontWeight = FontWeight.Normal,
-                                        fontSize = Size.normalFontSize,
+                                        fontSize = ThemeSize.normalFontSize,
                                         color = if (bottomSelectedState == index) {
-                                            Color.selectedColor
+                                            ThemeColor.selectedColor
                                         } else {
-                                            Color.normalColor
+                                            ThemeColor.normalColor
                                         }
                                     )
                                 },
                                 selected = currentDestination?.hierarchy?.any{it.route == item.route} == true,
                                 onClick = {
-                                    bottomSelectedState = index;
-                                    navController.navigate(item.route) {
-                                        popUpTo(navController.graph.findStartDestination().id) {
-                                            saveState = true
-                                        }
-                                        launchSingleTop = true
-                                        restoreState = true
-                                    }
+                                    bottomSelectedState = index
                                 }
                             )
                         }
                     }
                 }
-            ){ innerPadding ->
+            ){
                 Box{
                     when(bottomSelectedState){
-                        0 -> MovieHomeScreen(viewModel,navController)
-                        1 -> MovieScreen(viewModel,navController)
-                        2 -> TVScreen(viewModel,navController)
-                        3 -> MyScreen(viewModel,navController)
+                        0 -> MovieHomeScreen(viewModel,navController,it)
+                        1 -> MovieScreen(viewModel,navController,it)
+                        2 -> TVScreen(viewModel,navController,it)
+                        3 -> MyScreen(viewModel,navController,it)
                     }
                 }
             }

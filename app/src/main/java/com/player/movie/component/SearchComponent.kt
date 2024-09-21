@@ -15,9 +15,9 @@ import com.player.http.RequestUtils
 import com.player.http.ResultEntity
 import com.player.model.UserViewModel
 import com.player.movie.entity.MovieEntity
-import com.player.theme.Color
-import com.player.theme.Size
-import com.player.theme.Style
+import com.player.theme.ThemeColor
+import com.player.theme.ThemeSize
+import com.player.theme.ThemeStyle
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,17 +28,17 @@ fun SearchComponent (
 ){
 
     Row(
-        modifier = Style.boxDecoration
+        modifier = ThemeStyle.boxDecoration
     ) {
         var keyword = remember { mutableStateOf("") }
-        AvaterComponent(userViewModel,Size.middleAvater)
+        AvaterComponent(userViewModel,ThemeSize.middleAvater)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(Size.containerPadding, 0.dp, 0.dp, 0.dp)
+                .padding(ThemeSize.containerPadding, 0.dp, 0.dp, 0.dp)
                 .weight(1F, true)
-                .height(Size.middleAvater)
-                .background(Color.colorBg, RoundedCornerShape(Size.middleAvater))
+                .height(ThemeSize.middleAvater)
+                .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
         ) {
             val getKeyWordService: Call<ResultEntity> = RequestUtils.movieInstance.getKeyWord(classify)
             LaunchedEffect(Unit){
@@ -58,9 +58,9 @@ fun SearchComponent (
             }
             Text(
                 modifier = Modifier
-                    .padding(Size.containerPadding,0.dp,0.dp,0.dp),
+                    .padding(ThemeSize.containerPadding,0.dp,0.dp,0.dp),
                 text = keyword.value,
-                style = TextStyle(color = Color.disableColor),
+                style = TextStyle(color = ThemeColor.disableColor),
             )
         }
 

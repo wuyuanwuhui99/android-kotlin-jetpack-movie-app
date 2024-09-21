@@ -19,8 +19,8 @@ import com.player.constant.Constant
 import com.player.movie.entity.MovieEntity
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
-import com.player.theme.Color
-import com.player.theme.Size
+import com.player.theme.ThemeColor
+import com.player.theme.ThemeSize
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.delay
 import retrofit2.Call
@@ -80,14 +80,14 @@ fun Swipper(
     fun pageMapper(index: Int) = (index - startIndex).floorMod(pageCount)
     Column(
         modifier = Modifier
-            .height(Size.swiperHeight)
+            .height(ThemeSize.swiperHeight)
             .fillMaxWidth()
     ) {
         Box {
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier
-                    .height(Size.swiperHeight)
+                    .height(ThemeSize.swiperHeight)
                     .fillMaxWidth()
             ) { index ->
                 // 计算页面下标
@@ -104,8 +104,8 @@ fun Swipper(
 
             HorizontalPagerIndicator(
                 pagerState = pagerState,
-                activeColor = Color.selectedColor,
-                inactiveColor = Color.disableColor,
+                activeColor = ThemeColor.selectedColor,
+                inactiveColor = ThemeColor.disableColor,
                 indicatorWidth = 10.dp,
                 indicatorHeight = 4.dp,
                 spacing = 5.dp,
@@ -113,7 +113,7 @@ fun Swipper(
                     .align(
                         Alignment.BottomCenter
                     )
-                    .padding(Size.smallMargin)
+                    .padding(ThemeSize.smallMargin)
             )
         }
     }
@@ -125,7 +125,7 @@ fun BannerItem(movieEntity: MovieEntity) {
     Image(
         modifier = Modifier
             .fillMaxWidth()
-            .height(Size.swiperHeight),
+            .height(ThemeSize.swiperHeight),
         contentScale = ContentScale.FillHeight,
         painter = rememberImagePainter(
             data = Constant.HOST + movieEntity.localImg,

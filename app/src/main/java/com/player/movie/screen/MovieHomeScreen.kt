@@ -19,22 +19,22 @@ import com.player.movie.component.CategoryComponent
 import com.player.movie.component.ClassifyComponent
 import com.player.movie.component.SearchComponent
 import com.player.movie.entity.CategoryEntity
-import com.player.theme.Color
+import com.player.theme.ThemeColor
 import com.player.theme.MymovieTheme
-import com.player.theme.Size
+import com.player.theme.ThemeSize
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun MovieHomeScreen(userViewModel:UserViewModel,navController: NavHostController) {
+fun MovieHomeScreen(userViewModel:UserViewModel,navController: NavHostController,value:PaddingValues) {
     MymovieTheme {
         LazyColumn(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = Size.containerPadding, end = Size.containerPadding)
+                .padding(start = ThemeSize.containerPadding, end = ThemeSize.containerPadding)
                 .scrollable(
                     state = rememberScrollState(0),
                     orientation = Orientation.Vertical
@@ -42,15 +42,15 @@ fun MovieHomeScreen(userViewModel:UserViewModel,navController: NavHostController
         ) {
             item {
                 Spacer(modifier = Modifier
-                    .height(Size.containerPadding))
+                    .height(ThemeSize.containerPadding))
                 SearchComponent(userViewModel,classify = "电影")
                 Spacer(modifier = Modifier
-                    .height(Size.containerPadding))
+                    .height(ThemeSize.containerPadding))
                 Banner("轮播","电影")
                 Divider(
-                    color = Color.transparent,
+                    color = ThemeColor.transparent,
                     modifier = Modifier
-                        .height(Size.containerPadding)
+                        .height(ThemeSize.containerPadding)
                         .fillMaxWidth())
                 ClassifyComponent()
                 val allCategoryLists = remember {mutableStateListOf<CategoryEntity>()}
@@ -77,11 +77,11 @@ fun MovieHomeScreen(userViewModel:UserViewModel,navController: NavHostController
 
                 for (categoryItem in allCategoryLists){
                     Spacer(modifier = Modifier
-                        .height(Size.containerPadding))
+                        .height(ThemeSize.containerPadding))
                     CategoryComponent(category=categoryItem.category,classify=categoryItem.classify,navController = navController)
                 }
                 Spacer(modifier = Modifier
-                    .height(Size.containerPadding))
+                    .height(value.calculateBottomPadding() + ThemeSize.containerPadding))
             }
         }
     }

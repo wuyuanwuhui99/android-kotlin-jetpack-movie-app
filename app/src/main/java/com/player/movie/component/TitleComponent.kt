@@ -7,8 +7,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.player.theme.Color
-import com.player.theme.Size
+import com.player.theme.ThemeColor
+import com.player.theme.ThemeSize
 
 @Composable
 fun TitleComponent (
@@ -16,10 +16,10 @@ fun TitleComponent (
 ){
     Row (verticalAlignment= Alignment.CenterVertically){
         Divider(modifier = Modifier
-            .height(Size.containerPadding)
-            .width(Size.lineWidth)
-            .background(Color.activeColor)
+            .height(ThemeSize.containerPadding)
+            .width(ThemeSize.lineWidth)
+            .background(ThemeColor.activeColor)
         )
-        Text(text = title,modifier = Modifier.padding(start = Size.smallMargin))
+        Text(text = title,modifier = Modifier.padding(start = ThemeSize.smallMargin))
     }
 }

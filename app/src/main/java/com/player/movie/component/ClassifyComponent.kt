@@ -12,13 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.player.R
-import com.player.theme.Size
-import com.player.theme.Style
+import com.player.theme.ThemeSize
+import com.player.theme.ThemeStyle
 
 @Composable
 fun ClassifyComponent (){
     Row (
-        modifier = Style.boxDecoration
+        modifier = ThemeStyle.boxDecoration
     ){
         Column(
             modifier = Modifier.weight(1F, true),
@@ -27,8 +27,8 @@ fun ClassifyComponent (){
             Image(
                 painter = painterResource(id = R.mipmap.icon_hot),
                 modifier = Modifier
-                    .size(Size.bigIcon)
-                    .padding(0.dp, 0.dp, 0.dp, Size.smallMargin),
+                    .size(ThemeSize.bigIcon)
+                    .padding(0.dp, 0.dp, 0.dp, ThemeSize.smallMargin),
                 contentDescription = ""
             )
             Text(text = "热门")
@@ -40,8 +40,8 @@ fun ClassifyComponent (){
             Image(
                 painter = painterResource(id = R.mipmap.icon_play),
                 modifier = Modifier
-                    .size(Size.bigIcon)
-                    .padding(0.dp, 0.dp, 0.dp, Size.smallMargin),
+                    .size(ThemeSize.bigIcon)
+                    .padding(0.dp, 0.dp, 0.dp, ThemeSize.smallMargin),
                 contentDescription = ""
             )
             Text(text = "预告")
@@ -53,8 +53,8 @@ fun ClassifyComponent (){
             Image(
                 painter = painterResource(id = R.mipmap.icon_top),
                 modifier = Modifier
-                    .size(Size.bigIcon)
-                    .padding(0.dp, 0.dp, 0.dp, Size.smallMargin),
+                    .size(ThemeSize.bigIcon)
+                    .padding(0.dp, 0.dp, 0.dp, ThemeSize.smallMargin),
                 contentDescription = ""
             )
             Text(text = "最新")
@@ -66,8 +66,8 @@ fun ClassifyComponent (){
             Image(
                 painter = painterResource(id = R.mipmap.icon_classify),
                 modifier = Modifier
-                    .size(Size.bigIcon)
-                    .padding(0.dp, 0.dp, 0.dp, Size.smallMargin),
+                    .size(ThemeSize.bigIcon)
+                    .padding(0.dp, 0.dp, 0.dp, ThemeSize.smallMargin),
                 contentDescription = ""
             )
             Text(text = "分类")

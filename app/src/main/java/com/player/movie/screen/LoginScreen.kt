@@ -1,6 +1,7 @@
 package com.player.movie.screen
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,10 +33,10 @@ import com.player.http.RequestUtils
 import com.player.http.ResultEntity
 import com.player.model.UserViewModel
 import com.player.movie.entity.UserEntity
-import com.player.theme.Color
+import com.player.theme.ThemeColor
 import com.player.theme.MymovieTheme
-import com.player.theme.Size
-import com.player.theme.Style
+import com.player.theme.ThemeSize
+import com.player.theme.ThemeStyle
 import com.player.utils.MD5
 import com.player.utils.SharedPreferencesUtils
 import retrofit2.Call
@@ -54,52 +55,52 @@ fun LoginScreen(navController: NavHostController, viewModel: UserViewModel) {
             Scaffold(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.colorBg)
-                    .padding(Size.containerPadding)
+                    .background(ThemeColor.colorBg)
+                    .padding(ThemeSize.containerPadding)
 
             ) {
                 Column(
-                    modifier = Style.boxDecoration.fillMaxHeight(),
+                    modifier = ThemeStyle.boxDecoration.fillMaxHeight(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Spacer(modifier = Modifier.height(Size.bigIcon))
+                    Spacer(modifier = Modifier.height(ThemeSize.bigIcon))
                     Image(
                         painter = painterResource(id = R.mipmap.icon_logo),
                         modifier = Modifier
-                            .size(Size.bigAvater),
+                            .size(ThemeSize.bigAvater),
                         contentDescription = ""
                     )
-                    Spacer(modifier = Modifier.height(Size.bigIcon))
+                    Spacer(modifier = Modifier.height(ThemeSize.bigIcon))
                     userId = viewModel.userId.value
                     TextField(
                         leadingIcon = {
                             Image(
                                 painter = painterResource(id = R.mipmap.icon_user_active),
                                 modifier = Modifier
-                                    .size(Size.smallIcon),
+                                    .size(ThemeSize.smallIcon),
                                 contentDescription = ""
                             )
                         },
                         value = viewModel.userId.value,
                         onValueChange = {
-                            onUserValueChange(it)
+                            userId = it
                         },
                         colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = Color.transparent,
-                            focusedIndicatorColor=Color.transparent
+                            backgroundColor = ThemeColor.transparent,
+                            focusedIndicatorColor=ThemeColor.transparent
                         ),
                         modifier = Modifier
-                            .clip(RoundedCornerShape(Size.superRadius))
-                            .background(Color.transparent)
-                            .height(Size.inputHeight)
+                            .clip(RoundedCornerShape(ThemeSize.superRadius))
+                            .background(ThemeColor.transparent)
+                            .height(ThemeSize.inputHeight)
                             .border(
-                                Size.borderWidth,
-                                Color.borderColor,
-                                RoundedCornerShape(Size.middleBtnHeight)
+                                ThemeSize.borderWidth,
+                                ThemeColor.borderColor,
+                                RoundedCornerShape(ThemeSize.middleBtnHeight)
                             )
                             .fillMaxWidth()
                     )
-                    Spacer(modifier = Modifier.height(Size.containerPadding))
+                    Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                     val context = LocalContext.current
                     password = SharedPreferencesUtils.getParam(
                         context,
@@ -111,55 +112,55 @@ fun LoginScreen(navController: NavHostController, viewModel: UserViewModel) {
                             Image(
                                 painter = painterResource(id = R.mipmap.icon_password),
                                 modifier = Modifier
-                                    .size(Size.smallIcon),
+                                    .size(ThemeSize.smallIcon),
                                 contentDescription = ""
                             )
                         },
                         onValueChange = {
-                            onPasswordValueChange(it)
+                            password = it
                         },
                         colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = Color.transparent,
-                            focusedIndicatorColor=Color.transparent
+                            backgroundColor = ThemeColor.transparent,
+                            focusedIndicatorColor=ThemeColor.transparent
                         ),
                         value = password,
                         modifier = Modifier
-                            .clip(RoundedCornerShape(Size.superRadius))
-                            .background(Color.transparent)
-                            .height(Size.inputHeight)
+                            .clip(RoundedCornerShape(ThemeSize.superRadius))
+                            .background(ThemeColor.transparent)
+                            .height(ThemeSize.inputHeight)
                             .border(
-                                Size.borderWidth,
-                                Color.borderColor,
-                                RoundedCornerShape(Size.middleBtnHeight)
+                                ThemeSize.borderWidth,
+                                ThemeColor.borderColor,
+                                RoundedCornerShape(ThemeSize.middleBtnHeight)
                             )
                             .fillMaxWidth()
                     )
-                    Spacer(modifier = Modifier.height(Size.containerPadding))
+                    Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                     Button(
-                        shape = RoundedCornerShape(Size.superRadius),
+                        shape = RoundedCornerShape(ThemeSize.superRadius),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = Color.warnColor
+                            backgroundColor = ThemeColor.warnColor
                         ),
                         modifier = Modifier
-                            .height(Size.inputHeight)
+                            .height(ThemeSize.inputHeight)
                             .fillMaxWidth(),
                         onClick = {
                             useLogin(navController,context,viewModel)
                         }) {
-                        Text(text = "登录",style = TextStyle(color = Color.colorWhite))
+                        Text(text = "登录",style = TextStyle(color = ThemeColor.colorWhite))
                     }
-                    Spacer(modifier = Modifier.height(Size.containerPadding))
+                    Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
                     Button(
-                        shape = RoundedCornerShape(Size.superRadius),
-                        border = BorderStroke(1.dp, Color.borderColor),
-                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.transparent),
+                        shape = RoundedCornerShape(ThemeSize.superRadius),
+                        border = BorderStroke(1.dp, ThemeColor.borderColor),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = ThemeColor.transparent),
                         modifier = Modifier
-                            .height(Size.inputHeight)
+                            .height(ThemeSize.inputHeight)
                             .fillMaxWidth(),
                         onClick = {
 
                         }) {
-                        Text(text = "注册",style = TextStyle(color = Color.normalColor))
+                        Text(text = "注册",style = TextStyle(color = ThemeColor.normalColor))
                     }
                 }
             }
@@ -167,19 +168,16 @@ fun LoginScreen(navController: NavHostController, viewModel: UserViewModel) {
     }
 }
 
-fun onUserValueChange(value: String) {
-    userId = value
-}
-
-fun onPasswordValueChange(value: String) {
-    password = value
-}
-
+/**
+ * 获取字符串对应的MD5
+ * @date 2024-09-21 12:34
+ * @return
+ */
 fun useLogin(navController:NavHostController,context:Context,viewModel: UserViewModel) {
     if (userId == "") {
-
+        Toast.makeText(context,"账号不能为空", Toast.LENGTH_SHORT).show()
     }else if(password == ""){
-
+        Toast.makeText(context,"密码不能为空", Toast.LENGTH_SHORT).show()
     }else{
         val userEntity = UserEntity()
         userEntity.userId = userId
@@ -199,11 +197,12 @@ fun useLogin(navController:NavHostController,context:Context,viewModel: UserView
                     viewModel.setUserEntity(userEntity)
                     SharedPreferencesUtils.setParam(context, Constant.TOKEN,body.token)
                     navController.navigate("MainScreen")
+                    Toast.makeText(context,"登录成功", Toast.LENGTH_SHORT).show()
                 }
             }
 
             override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
-                System.out.println(t)
+
             }
         })
     }

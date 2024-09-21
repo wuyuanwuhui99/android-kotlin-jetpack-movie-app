@@ -12,24 +12,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 private val DarkColorPalette = darkColors(
-    primary = Color.Purple200,
-    primaryVariant = Color.Purple700,
-    secondary = Color.Teal200,
-    background = Color.colorBgDark
+    primary = ThemeColor.Purple200,
+    primaryVariant = ThemeColor.Purple700,
+    secondary = ThemeColor.Teal200,
+    background = ThemeColor.colorBgDark
 )
 
 private val LightColorPalette = lightColors(
-    primary = Color.Purple500,
-    primaryVariant = Color.Purple700,
-    secondary = Color.Teal200,
-    background = Color.colorBg
+    primary = ThemeColor.Purple500,
+    primaryVariant = ThemeColor.Purple700,
+    secondary = ThemeColor.Teal200,
+    background = ThemeColor.colorBg
 )
 
-object Style {
+object ThemeStyle {
     val boxDecoration: Modifier = Modifier
         .fillMaxWidth()
-        .background(Color.colorWhite,RoundedCornerShape(Size.middleRadius))
-        .padding(Size.containerPadding)
+        .background(ThemeColor.colorWhite,RoundedCornerShape(ThemeSize.middleRadius))
+        .padding(ThemeSize.containerPadding)
 }
 
 @Composable

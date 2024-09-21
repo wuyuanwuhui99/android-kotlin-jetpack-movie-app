@@ -13,7 +13,7 @@ import coil.compose.rememberImagePainter
 import coil.transition.CrossfadeTransition
 import com.player.constant.Constant
 import com.player.model.UserViewModel
-import com.player.theme.Size
+import com.player.theme.ThemeSize
 
 @Composable
 fun AvaterComponent (

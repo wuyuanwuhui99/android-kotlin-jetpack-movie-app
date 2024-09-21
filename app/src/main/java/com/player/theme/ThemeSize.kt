@@ -3,9 +3,8 @@ package com.player.theme
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-object Size {
+object ThemeSize {
     val containerPadding = 15.dp;// 每个模块之间的内边距和外边距
-    val columnPadding = 20.sp;// 上下边距
     val middleRadius = 10.dp;// 圆角大小
     val bigRadius = 20.dp;// 圆角大小
     val superRadius = 30.dp;// 加大版圆角
