@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.player.movie.entity.UserEntity
 
 class UserViewModel : ViewModel() {
-    val userId  = mutableStateOf("")
+    val userId  = mutableStateOf("吴时吴刻")
     val createDate  = mutableStateOf("")
     val updateDate  = mutableStateOf("")
     val username  = mutableStateOf("")
@@ -16,7 +16,7 @@ class UserViewModel : ViewModel() {
     val sex  = mutableStateOf("")
     val role  = mutableStateOf("")
     val sign  = mutableStateOf("")
-    val password  = mutableStateOf("")
+    val password  = mutableStateOf("123456")
     val region  = mutableStateOf("")
 
     fun setUserEntity(userEntity: UserEntity){

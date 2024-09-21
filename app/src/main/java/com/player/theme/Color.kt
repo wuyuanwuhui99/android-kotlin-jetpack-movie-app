@@ -7,7 +7,6 @@ object Color {
     val Purple500 = Color(0xFF6200EE)
     val Purple700 = Color(0xFF3700B3)
     val Teal200 = Color(0xFF03DAC5)
-    val Transparent = Color.Transparent
     val colorBg = Color(0xFFEEEEEE);
     val colorBgDark = Color(0xFF111111);
     val colorWhite = Color(0xFFFFFFFF);
@@ -19,4 +18,6 @@ object Color {
     val blueColor = Color(0xFF3E7D9B);
     val selectedColor = Color(0xFFFFBB15);
     val normalColor = Color(0xFF000000);
+    val warnColor = Color(0xFFFF0000);
+    val transparent = Color.Transparent
 }

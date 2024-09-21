@@ -1,21 +1,16 @@
 package com.player.movie.screen
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.google.gson.Gson
 import com.player.BaseApplication
-import com.player.activity.MainActivity
 import com.player.constant.Constant
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
@@ -35,7 +30,7 @@ fun LaunchScreen(navController: NavHostController,viewModel: UserViewModel){
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            Scaffold(modifier = Modifier.fillMaxSize()){ innerPadding ->
+            Scaffold(modifier = Modifier.fillMaxSize()){
                 Text(text = "欢迎使用",textAlign = TextAlign.Center,//文字居中对齐
                     modifier = Modifier.fillMaxSize().wrapContentHeight(Alignment.CenterVertically)
                 )
@@ -61,6 +56,7 @@ fun LaunchScreen(navController: NavHostController,viewModel: UserViewModel){
                                     BaseApplication.getInstance().userEntity = userEntity
                                     viewModel.setUserEntity(userEntity)
                                     SharedPreferencesUtils.setParam(context,Constant.TOKEN,body.token)
+                                    navController.navigate("MainScreen")
                                 }else{
                                     navController.navigate("LoginScreen")
                                 }

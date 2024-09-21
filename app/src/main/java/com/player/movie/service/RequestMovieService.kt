@@ -62,6 +62,9 @@ interface RequestMovieService {
         @Query("pageNum") pageNum: Int
     ): Call<ResultEntity?>?
 
+    @POST(Api.LOGIN)
+    fun login(@Body userEntity: UserEntity): Call<ResultEntity>
+
     @PUT(Api.UPDATEUSER)
     fun updateUser(@Body userEntity: UserEntity?): Call<ResultEntity?>?
 }

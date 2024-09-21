@@ -8,10 +8,10 @@ object Size {
     val columnPadding = 20.sp;// 上下边距
     val middleRadius = 10.dp;// 圆角大小
     val bigRadius = 20.dp;// 圆角大小
-    val superRadius = 30.sp;// 加大版圆角
+    val superRadius = 30.dp;// 加大版圆角
     val minBtnRadius = 5.sp;// 小圆角
     val middleBtnWidth = 70.sp;// 中等按钮宽度
-    val middleBtnHeight = 35.sp;// 中等按钮高度
+    val middleBtnHeight = 35.dp;// 中等按钮高度
     val swiperHeight = 180.dp; // 轮播高度
     val movieWidth = 150.dp; // 电影图片宽度
     val movieHeight = 200.dp;// 电影图片高度
@@ -29,7 +29,7 @@ object Size {
     val bigFontSize = 20.sp;// 大标题字体
     val middleAvater = 40.dp;// 中等头像
     val bigAvater = 60.dp;// 大头像
-    val borderWidth = 1.sp;// 边框大小
+    val borderWidth = 1.dp;// 边框大小
     val buttonHeight = 40.sp;//按钮大小
     val crossAxisCount = 5.sp;// 网格布局每行元素个数
     val childAspectRatio = 1.6.sp;// 网格布局宽高比例
@@ -37,4 +37,6 @@ object Size {
     val minPlayIcon = 80.sp;// 音乐播放器圈圈大小
     val lineHeight = 30.dp// 竖线高度
     val lineWidth = 3.dp// 竖线宽度
+    val inputHeight = 55.dp// 输入框的高度
+
 }

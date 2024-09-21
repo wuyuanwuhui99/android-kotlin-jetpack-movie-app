@@ -47,7 +47,7 @@ fun TVScreen(userViewModel: UserViewModel,navController: NavHostController) {
                     .height(Size.containerPadding))
                 Banner("轮播","电视剧")
                 Divider(
-                    color = Color.Transparent,
+                    color = Color.transparent,
                     modifier = Modifier
                         .height(Size.containerPadding)
                         .fillMaxWidth())
