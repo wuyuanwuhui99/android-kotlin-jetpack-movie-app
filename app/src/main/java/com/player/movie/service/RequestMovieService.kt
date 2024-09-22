@@ -67,4 +67,7 @@ interface RequestMovieService {
 
     @PUT(Api.UPDATEUSER)
     fun updateUser(@Body userEntity: UserEntity?): Call<ResultEntity?>?
+
+    @GET(Api.GETSTAR)
+    fun getStar(@Path("movieId")movieId:Long): Call<ResultEntity>
 }

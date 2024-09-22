@@ -4,7 +4,7 @@ import java.util.*
 
 class MovieStarEntity {
     var id: Long? = null//主键
-    var starName: String? = null//演员名称
+    var starName: String = ""//演员名称
     var img: String? = null//演员图片地址
     var localImg: String? = null//演员本地本地图片
     var createTime: Date? = null //创建时间
