@@ -39,6 +39,7 @@ import com.player.R
 import com.player.constant.Constant
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
+import com.player.movie.component.CategoryComponent
 import com.player.movie.component.TitleComponent
 import com.player.movie.entity.CategoryEntity
 import com.player.movie.entity.MovieEntity
@@ -74,6 +75,10 @@ fun MovieDetailScreen(navController: NavHostController, movieEntity: MovieEntity
         item {
             StarScreen(movieId = movieEntity.movieId)
         }
+        item {
+            RecommendScreen(navController = navController,movieEntity = movieEntity)
+        }
+
     }
 }
 
@@ -220,4 +225,15 @@ fun StarScreen(movieId:Long){
             }
         }
     }
+}
+
+/**
+ * @desc 推荐歌曲
+ * @date 2024-09-22 22:54
+ * @author wuwenqiang
+ */
+@Composable
+fun RecommendScreen(navController: NavHostController,movieEntity:MovieEntity){
+    Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
+    CategoryComponent(category = "推荐", classify = movieEntity.classify, navController = navController)
 }
