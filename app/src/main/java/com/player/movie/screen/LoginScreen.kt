@@ -169,9 +169,9 @@ fun LoginScreen(navController: NavHostController, viewModel: UserViewModel) {
 }
 
 /**
- * 获取字符串对应的MD5
+ * @desc 获取字符串对应的MD5
  * @date 2024-09-21 12:34
- * @return
+ * @author wuwenqiang
  */
 fun useLogin(navController:NavHostController,context:Context,viewModel: UserViewModel) {
     if (userId == "") {
