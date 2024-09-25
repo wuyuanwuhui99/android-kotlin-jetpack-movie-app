@@ -58,7 +58,7 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController,value
                 )
         ) {
             item {
-                UserProfile(userViewModel)
+                UserProfile(userViewModel, navController)
             }
             item {
                 UserMsg()
@@ -85,7 +85,7 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController,value
  * @author wuwenqiang
  */
 @Composable
-fun UserProfile(userViewModel:UserViewModel){
+fun UserProfile(userViewModel:UserViewModel,navController: NavHostController){
     Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
     Row(
         modifier = ThemeStyle.boxDecoration,
@@ -102,8 +102,12 @@ fun UserProfile(userViewModel:UserViewModel){
         Image(
             painter = painterResource(id = R.mipmap.icon_edit),
             modifier = Modifier
-                .size(ThemeSize.bigIcon),
-            contentDescription = ""
+                .size(ThemeSize.bigIcon)
+                .clickable {
+                    navController.navigate("UserScreen")
+                }
+            ,
+            contentDescription = "",
         )
     }
 }

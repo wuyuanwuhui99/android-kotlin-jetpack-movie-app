@@ -13,7 +13,7 @@ class UserViewModel : ViewModel() {
     val email  = mutableStateOf("")
     val avater  = mutableStateOf("")
     val birthday  = mutableStateOf("")
-    val sex  = mutableStateOf("")
+    val sex  = mutableStateOf(0)
     val role  = mutableStateOf("")
     val sign  = mutableStateOf("")
     val password  = mutableStateOf("123456")

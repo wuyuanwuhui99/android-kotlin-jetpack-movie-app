@@ -46,10 +46,10 @@ fun MovieScreen(userViewModel: UserViewModel,navController: NavHostController,va
                     .height(ThemeSize.containerPadding))
                 Banner("轮播","电影")
                 Divider(
-                    color = ThemeColor.transparent,
-                    modifier = Modifier
-                        .height(ThemeSize.containerPadding)
-                        .fillMaxWidth())
+                        color = ThemeColor.transparent,
+                modifier = Modifier
+                    .height(ThemeSize.containerPadding)
+                    .fillMaxWidth())
                 val allCategoryLists = remember {mutableStateListOf<CategoryEntity>()}
                 LaunchedEffect(Unit) {
                     val allCategoryListService: Call<ResultEntity> =

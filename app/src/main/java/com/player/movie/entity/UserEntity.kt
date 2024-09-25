@@ -9,7 +9,7 @@ class UserEntity {
     var email: String = ""
     var avater: String = ""
     var birthday: String = ""
-    var sex: String = ""
+    var sex: Int = 0
     var role: String = ""
     var sign: String = ""
     var password: String = ""

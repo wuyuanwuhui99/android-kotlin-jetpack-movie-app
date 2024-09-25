@@ -16,6 +16,7 @@ import com.player.movie.screen.LaunchScreen
 import com.player.movie.screen.LoginScreen
 import com.player.movie.screen.MainScreen
 import com.player.movie.screen.MovieDetailScreen
+import com.player.movie.screen.UserScreen
 
 @Composable
 fun NavHostApp(innerPadding: PaddingValues, viewModel: UserViewModel){
@@ -45,6 +46,9 @@ fun NavHostApp(innerPadding: PaddingValues, viewModel: UserViewModel){
             val movieEntity = JSON.parseObject(data, MovieEntity::class.java)
             MovieDetailScreen(navController,movieEntity)
         }
+        composable(RouteList.UserScreen.description){
+            UserScreen(navController,viewModel)
+        }
     }
 }
 
@@ -55,4 +59,5 @@ enum class RouteList(val description: String) {
     LoginScreen("LoginScreen"),
     MainScreen("MainScreen"),
     MovieDetailScreen("movieDetail?data={data}"),
+    UserScreen("UserScreen"),
 }
