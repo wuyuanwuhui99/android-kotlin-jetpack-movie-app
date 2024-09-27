@@ -2,11 +2,11 @@ package com.player.movie.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,13 +21,17 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,6 +47,9 @@ import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
 import com.player.theme.ThemeStyle
 
+var title:String = ""
+var mValue:String =  ""
+var field:String = ""
 
 @Composable
 fun UserScreen( navController: NavHostController,userViewModel: UserViewModel) {
@@ -57,9 +64,35 @@ fun UserScreen( navController: NavHostController,userViewModel: UserViewModel) {
                     .padding(ThemeSize.containerPadding)
 
             ) {
-                val  showDialog = remember{ mutableStateOf(false)}
+                val showDialog = remember{ mutableStateOf(false)}
+
                 if(showDialog.value){
-                    MyDialog()
+                    MyDialog(showDialog,"修改$title"){
+                        Row(verticalAlignment=Alignment.CenterVertically,modifier = Modifier.padding(start=ThemeSize.containerPadding, end = ThemeSize.containerPadding)) {
+                            Text(text = title)
+                            Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+                            TextField(
+                                value = mValue,
+                                colors = TextFieldDefaults.textFieldColors(
+                                    backgroundColor = ThemeColor.transparent,
+                                    focusedIndicatorColor=ThemeColor.transparent
+                                ),
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(ThemeSize.middleRadius))
+                                    .background(ThemeColor.disableColor)
+                                    .height(ThemeSize.inputHeight)
+                                    .border(
+                                        ThemeSize.borderWidth,
+                                        ThemeColor.borderColor,
+                                        RoundedCornerShape(ThemeSize.middleRadius)
+                                    )
+                                    .weight(1f),
+                                onValueChange = {
+                                    mValue = it
+                                }
+                            )
+                        }
+                    }
                 }
                 Column(
                     modifier = ThemeStyle.boxDecoration,
@@ -117,6 +150,8 @@ fun UserInfoScreen(name:String,value:String,showDialg:MutableState<Boolean>){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.clickable {
+            title = name
+            mValue = value
             showDialg.value = true
         }
     ) {
@@ -133,13 +168,10 @@ fun UserInfoScreen(name:String,value:String,showDialg:MutableState<Boolean>){
 }
 
 @Composable
-fun MyDialog(){
-    val state = remember {
-        mutableStateOf(true)
-    }
+fun MyDialog(showDialg:MutableState<Boolean>,title:String,content: @Composable () -> Unit){
     Dialog(
         onDismissRequest = {
-            state.value = false
+            showDialg.value = false
         },
         properties = DialogProperties(dismissOnBackPress=true,dismissOnClickOutside = true,securePolicy = SecureFlagPolicy.SecureOff)
     ) {
@@ -153,38 +185,43 @@ fun MyDialog(){
                 )
         ){
             Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
-            Text(text = "对话框标题",
+            Text(text = title,
+                modifier=Modifier.fillMaxWidth(),
                 fontSize = ThemeSize.middleFontSize,
                 fontWeight = FontWeight.Bold,
                 textAlign= TextAlign.Center,
             )
             Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
-            Text(text = "对话框内容,对话框内容,对话框内容,对话框内容,对话框内容,对话框内容")
+            content()
             Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
             Divider(modifier = Modifier
                 .fillMaxWidth()
                 .background(ThemeColor.colorBg)
                 .height(ThemeSize.borderWidth))
-            Row() {
+            Row {
                 Button(
                     onClick = {
-                        state.value = false
+                        showDialg.value = false
                     },
-                    modifier = Modifier.weight(1f,true).height(ThemeSize.middleBtnHeight),
+                    modifier = Modifier
+                        .weight(1f, true)
+                        .height(ThemeSize.buttonHeight),
                     shape = RoundedCornerShape(ThemeSize.middleRadius),
                     colors = ButtonDefaults.buttonColors(backgroundColor = ThemeColor.colorWhite),
                 ) {
-                    Text(text = "取消")
+                    Text(text = "取消", style = TextStyle(color = ThemeColor.subTitle))
                 }
                 Divider(modifier = Modifier
-                    .height(ThemeSize.middleBtnHeight)
+                    .height(ThemeSize.buttonHeight)
                     .background(ThemeColor.colorBg)
                     .width(ThemeSize.borderWidth))
                 Button(
                     onClick = {
-                        state.value = false
+                        showDialg.value = false
                     },
-                    modifier = Modifier.weight(1f,true).height(ThemeSize.middleBtnHeight),
+                    modifier = Modifier
+                        .weight(1f, true)
+                        .height(ThemeSize.buttonHeight),
                     shape = RoundedCornerShape(ThemeSize.middleRadius),
                     colors = ButtonDefaults.buttonColors(backgroundColor = ThemeColor.colorWhite),
                 ) {

@@ -29,7 +29,7 @@ object ThemeSize {
     val middleAvater = 40.dp;// 中等头像
     val bigAvater = 60.dp;// 大头像
     val borderWidth = 1.dp;// 边框大小
-    val buttonHeight = 40.sp;//按钮大小
+    val buttonHeight = 50.dp;//按钮大小
     val crossAxisCount = 5.sp;// 网格布局每行元素个数
     val childAspectRatio = 1.6.sp;// 网格布局宽高比例
     val pageSize = 20.sp;// 每页显示大小
