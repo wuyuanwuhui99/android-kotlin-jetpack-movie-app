@@ -88,7 +88,9 @@ fun MyScreen(userViewModel: UserViewModel,navController: NavHostController,value
 fun UserProfile(userViewModel:UserViewModel,navController: NavHostController){
     Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
     Row(
-        modifier = ThemeStyle.boxDecoration,
+        modifier = ThemeStyle.boxDecoration.clickable {
+            navController.navigate("UserScreen")
+        },
         verticalAlignment = Alignment.CenterVertically
     ) {
         AvaterComponent(userViewModel, ThemeSize.bigAvater)
@@ -103,9 +105,6 @@ fun UserProfile(userViewModel:UserViewModel,navController: NavHostController){
             painter = painterResource(id = R.mipmap.icon_edit),
             modifier = Modifier
                 .size(ThemeSize.bigIcon)
-                .clickable {
-                    navController.navigate("UserScreen")
-                }
             ,
             contentDescription = "",
         )
@@ -123,7 +122,7 @@ val subTextStyle = TextStyle(color = ThemeColor.disableColor)
  */
 @Composable
 fun UserMsg(){
-   val userMsgEntity by remember { mutableStateOf(UserMsgEntity()) }
+   var userMsgEntity by remember { mutableStateOf(UserMsgEntity()) }
     LaunchedEffect(Unit) {
         RequestUtils.movieInstance.getUserMsg()
             .enqueue(object : Callback<ResultEntity> {
@@ -135,7 +134,7 @@ fun UserMsg(){
                         JSON.toJSONString(response.body()?.data),
                         UserMsgEntity::class.java
                     )
-                    userMsgEntity.setData(mUserMsgEntity);
+                    userMsgEntity = mUserMsgEntity
                 }
 
                 override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
