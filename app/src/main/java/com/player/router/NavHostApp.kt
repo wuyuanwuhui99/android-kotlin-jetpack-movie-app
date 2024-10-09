@@ -16,6 +16,7 @@ import com.player.movie.screen.LaunchScreen
 import com.player.movie.screen.LoginScreen
 import com.player.movie.screen.MainScreen
 import com.player.movie.screen.MovieDetailScreen
+import com.player.movie.screen.MoviePlayerScreen
 import com.player.movie.screen.UserScreen
 
 @Composable
@@ -49,6 +50,18 @@ fun NavHostApp(innerPadding: PaddingValues, viewModel: UserViewModel){
         composable(RouteList.UserScreen.description){
             UserScreen(navController,viewModel)
         }
+        composable(
+            RouteList.MoviePlayerScreen.description,listOf(
+                // 设置默认值
+                navArgument("data") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )) { backStackEntry ->
+            val data = backStackEntry.arguments?.getString("data")
+            val movieEntity = JSON.parseObject(data, MovieEntity::class.java)
+            MoviePlayerScreen(navController,movieEntity)
+        }
     }
 }
 
@@ -58,6 +71,7 @@ enum class RouteList(val description: String) {
     LaunchScreen("LaunchScreen"),
     LoginScreen("LoginScreen"),
     MainScreen("MainScreen"),
-    MovieDetailScreen("movieDetail?data={data}"),
+    MovieDetailScreen("MovieDetailScreen?data={data}"),
     UserScreen("UserScreen"),
+    MoviePlayerScreen("MoviePlayerScreen?data={data}"),
 }

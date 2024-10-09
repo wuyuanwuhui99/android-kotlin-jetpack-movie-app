@@ -2,6 +2,7 @@ package com.player.movie.screen
 
 import com.player.movie.component.RatingBar
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.horizontalScroll
@@ -66,7 +67,7 @@ fun MovieDetailScreen(navController: NavHostController, movieEntity: MovieEntity
             )
     ) {
         item {
-            MovieInfoScreen(movieEntity = movieEntity)
+            MovieInfoScreen(navController = navController,movieEntity = movieEntity)
         }
         item {
             PlotScreen(plot = movieEntity.plot)
@@ -88,11 +89,15 @@ fun MovieDetailScreen(navController: NavHostController, movieEntity: MovieEntity
  * @author wuwenqiang
  */
 @Composable
-fun MovieInfoScreen(movieEntity: MovieEntity){
+fun MovieInfoScreen(navController: NavHostController,movieEntity: MovieEntity){
     Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
     Row(modifier = ThemeStyle.boxDecoration) {
         Box(
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.clickable {
+                val data:String = JSON.toJSONString(movieEntity)
+                navController.navigate("MoviePlayerScreen?data=$data")
+            }
         ) {
             Image(
                 modifier = Modifier

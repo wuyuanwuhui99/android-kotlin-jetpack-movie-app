@@ -58,7 +58,7 @@ fun CategoryComponent(
                             // 点击事件
                             onTap = {
                                 val data:String = JSON.toJSONString(movieEntity)
-                                navController.navigate("movieDetail?data=$data")
+                                navController.navigate("MovieDetailScreen?data=$data")
                             }
                         )
                     }) {
