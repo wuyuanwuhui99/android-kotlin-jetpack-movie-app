@@ -25,8 +25,8 @@ object Api {
     const val ISFAVORITE = "/service/movie-getway/isFavorite" //查询是否已经收藏
     const val UPDATEUSER = "/service/movie-getway/updateUser" //更新用户信息
     const val UPDATEPASSWORD = "/service/movie-getway/updatePassword" //更新密码
-    const val GETCOMMENTCOUNT = "/service/movie/getCommentCount" //获取评论总数
-    const val GETTOPCOMMENTLIST = "/service/movie/getTopCommentList" //获取一级评论
-    const val GETREPLYCOMMENTLIST = "/service/movie/getReplyCommentList" //获取一级评论
-    const val INSERTCOMMENTSERVICE = "/service/movie-getway/insertComment" //新增评论
+    const val GETCOMMENTCOUNT = "/service/social/getCommentCount" //获取评论总数
+    const val GETTOPCOMMENTLIST = "/service/social/getTopCommentList" //获取一级评论
+    const val GETREPLYCOMMENTLIST = "/service/social/getReplyCommentList" //获取一级评论
+    const val INSERTCOMMENTSERVICE = "/service/social-getway/insertComment" //新增评论
 }

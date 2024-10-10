@@ -1,5 +1,6 @@
 package com.player.movie.service
 
+import com.player.constant.RelationType
 import com.player.http.ResultEntity
 import com.player.movie.api.Api
 import com.player.movie.entity.UserEntity
@@ -70,4 +71,10 @@ interface RequestMovieService {
 
     @GET(Api.GETSTAR)
     fun getStar(@Path("movieId")movieId:Long): Call<ResultEntity>
+
+    @GET(Api.GETCOMMENTCOUNT)
+    fun getCommentCount(
+        @Query("relationId") relationId: Long,
+        @Query("type") type: String,
+    ): Call<ResultEntity>
 }
