@@ -32,6 +32,7 @@ import com.player.http.RequestUtils
 import com.player.http.ResultEntity
 import com.player.movie.entity.CategoryEntity
 import com.player.movie.entity.MovieEntity
+import com.player.movie.entity.MovieUrlEntity
 import com.player.theme.MymovieTheme
 import com.player.theme.ThemeSize
 import com.player.theme.ThemeStyle
@@ -48,22 +49,28 @@ fun MoviePlayerScreen(navController: NavHostController,movieEntity: MovieEntity)
         ) {
             Scaffold(modifier = Modifier.fillMaxSize()){
                 Column(modifier = Modifier.fillMaxSize()) {
-                    Column(modifier = Modifier.fillMaxWidth().aspectRatio((16/9).toFloat())) {
-                        WebView(LocalContext.current).apply {
-                            layoutParams = ViewGroup.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT
-                            )
-                            webViewClient = WebViewClient()
-                            loadUrl("www.baidu.com")
-                        }
+                    LaunchedEffect(Unit){
+                        val savePlayRecord: Call<ResultEntity> = RequestUtils.movieInstance.savePlayRecord(movieEntity,)
+                        savePlayRecord.enqueue(object : Callback<ResultEntity> {
+                            override fun onResponse(
+                                call: Call<ResultEntity>,
+                                response: Response<ResultEntity>
+                            ) {
+
+                            }
+                            override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
+                                println("错误")
+                            }
+                        })
                     }
+                    WebvieScreen()
 
                     Column(modifier = Modifier.padding(ThemeSize.containerPadding).scrollable(
                         state = rememberScrollState(0),
                         orientation = Orientation.Vertical
                     ).weight(1F,true)) {
                         MenuScreen(movieEntity)
+                        MovieUrlSreen(movieEntity.id)
                     }
                 }
             }
@@ -71,6 +78,19 @@ fun MoviePlayerScreen(navController: NavHostController,movieEntity: MovieEntity)
     }
 }
 
+@Composable
+fun WebvieScreen(){
+    Column(modifier = Modifier.fillMaxWidth().aspectRatio((16/9).toFloat())) {
+        WebView(LocalContext.current).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            webViewClient = WebViewClient()
+            loadUrl("www.baidu.com")
+        }
+    }
+}
 
 @Composable
 fun MenuScreen(movieEntity: MovieEntity){
@@ -92,7 +112,7 @@ fun MenuScreen(movieEntity: MovieEntity){
             }
         })
     }
-    
+
     Row(modifier = ThemeStyle.boxDecoration) {
         Image(
             painter = painterResource(id = R.mipmap.icon_comment),
@@ -103,4 +123,30 @@ fun MenuScreen(movieEntity: MovieEntity){
         Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
         Text(text = commentCount.toString())
     }
+}
+
+@Composable
+fun MovieUrlSreen(movieId:Long){
+    val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(movieId)
+    val movieUrlEntityList = remember { mutableStateListOf<MovieUrlEntity>() }
+    LaunchedEffect(Unit){
+        getMovieUrl.enqueue(object : Callback<ResultEntity> {
+            override fun onResponse(
+                call: Call<ResultEntity>,
+                response: Response<ResultEntity>
+            ) {
+                val movieList = JSON.parseArray(
+                    JSON.toJSONString(response.body()?.data ?: ""),
+                    MovieUrlEntity::class.java
+                )
+                if(movieList != null){
+                    movieUrlEntityList.addAll(movieList)
+                }
+            }
+            override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
+                println("错误")
+            }
+        })
+    }
+
 }

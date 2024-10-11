@@ -3,6 +3,7 @@ package com.player.movie.service
 import com.player.constant.RelationType
 import com.player.http.ResultEntity
 import com.player.movie.api.Api
+import com.player.movie.entity.MovieEntity
 import com.player.movie.entity.UserEntity
 import retrofit2.Call
 import retrofit2.http.*
@@ -77,4 +78,10 @@ interface RequestMovieService {
         @Query("relationId") relationId: Long,
         @Query("type") type: String,
     ): Call<ResultEntity>
+
+    @POST(Api.SAVEPLAYRECORD)
+    fun savePlayRecord(@Body movieEntity: MovieEntity): Call<ResultEntity>
+
+    @GET(Api.GETMOVIEURL)
+    fun getMovieUrl(@Query("movieId")movieId:Long): Call<ResultEntity>
 }
