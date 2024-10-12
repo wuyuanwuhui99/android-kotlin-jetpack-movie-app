@@ -3,7 +3,9 @@ package com.player.movie.screen
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
@@ -17,12 +19,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.alibaba.fastjson.JSON
@@ -34,8 +38,10 @@ import com.player.movie.entity.CategoryEntity
 import com.player.movie.entity.MovieEntity
 import com.player.movie.entity.MovieUrlEntity
 import com.player.theme.MymovieTheme
+import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
 import com.player.theme.ThemeStyle
+import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -65,11 +71,15 @@ fun MoviePlayerScreen(navController: NavHostController,movieEntity: MovieEntity)
                     }
                     WebvieScreen()
 
-                    Column(modifier = Modifier.padding(ThemeSize.containerPadding).scrollable(
-                        state = rememberScrollState(0),
-                        orientation = Orientation.Vertical
-                    ).weight(1F,true)) {
+                    Column(modifier = Modifier
+                        .padding(ThemeSize.containerPadding)
+                        .scrollable(
+                            state = rememberScrollState(0),
+                            orientation = Orientation.Vertical
+                        )
+                        .weight(1F, true)) {
                         MenuScreen(movieEntity)
+                        Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
                         MovieUrlSreen(movieEntity.id)
                     }
                 }
@@ -80,7 +90,9 @@ fun MoviePlayerScreen(navController: NavHostController,movieEntity: MovieEntity)
 
 @Composable
 fun WebvieScreen(){
-    Column(modifier = Modifier.fillMaxWidth().aspectRatio((16/9).toFloat())) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .aspectRatio((16 / 9).toFloat())) {
         WebView(LocalContext.current).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -127,8 +139,9 @@ fun MenuScreen(movieEntity: MovieEntity){
 
 @Composable
 fun MovieUrlSreen(movieId:Long){
-    val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(movieId)
-    val movieUrlEntityList = remember { mutableStateListOf<MovieUrlEntity>() }
+//    val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(movieId)
+    val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(72667)
+    val movieUrlEntityGroup = remember { mutableStateListOf<List<MovieUrlEntity>>() }
     LaunchedEffect(Unit){
         getMovieUrl.enqueue(object : Callback<ResultEntity> {
             override fun onResponse(
@@ -140,7 +153,17 @@ fun MovieUrlSreen(movieId:Long){
                     MovieUrlEntity::class.java
                 )
                 if(movieList != null){
-                    movieUrlEntityList.addAll(movieList)
+                    for(item in movieList){
+                        var movieUrlList: List<MovieUrlEntity>? = movieUrlEntityGroup.find{
+                            it.isNotEmpty() && it[0].playGroup == item.playGroup
+                        }
+                        if (movieUrlList == null) {
+                            movieUrlList = listOf(item)
+                            movieUrlEntityGroup.add(movieUrlList)
+                        }else{
+                            movieUrlList.plus(item)
+                        }
+                    }
                 }
             }
             override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
@@ -148,5 +171,42 @@ fun MovieUrlSreen(movieId:Long){
             }
         })
     }
+    Column(modifier = ThemeStyle.boxDecoration) {
+        var i = -1
+        for (movieList in movieUrlEntityGroup) {
+            i++
+            Column() {
+                Text(movieList[0].playGroup)
+                Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
+                var index = -1
+                for (item in movieList){
+                    index++
+                    Row() {
+                        Button(
+                            shape = RoundedCornerShape(ThemeSize.superRadius),
+                            border = BorderStroke(1.dp, ThemeColor.borderColor),
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = ThemeColor.transparent),
+                            modifier = Modifier
+                                .height(ThemeSize.inputHeight),
+                            onClick = {
 
+                            }) {
+                            Text(text = item.label,style = TextStyle(color = ThemeColor.normalColor))
+                        }
+                    }
+                    if(index != movieList.size - 1){
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+                    }
+                }
+            }
+            if(i != movieUrlEntityGroup.size - 1){
+                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+                Divider(modifier = Modifier
+                    .fillMaxWidth()
+                    .background(ThemeColor.colorBg)
+                    .height(1.dp))
+                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+            }
+        }
+    }
 }
