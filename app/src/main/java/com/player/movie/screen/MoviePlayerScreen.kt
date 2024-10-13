@@ -9,17 +9,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -80,22 +83,21 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
                     }
                     WebvieScreen()
 
-                    Column(
+                    LazyColumn(
+                       horizontalAlignment = Alignment.Start,
+                       verticalArrangement = Arrangement.Top,
                         modifier = Modifier
+                            .scrollable(state = rememberScrollState(0),orientation = Orientation.Vertical)
                             .padding(ThemeSize.containerPadding)
-                            .weight(1F, true)
+                            .weight(1F)
                     ) {
-                        Column(
-                            modifier = Modifier.scrollable(
-                                state = rememberScrollState(0),
-                                orientation = Orientation.Vertical
-                            )
-                        ) {
-                            MenuScreen(movieEntity)
-                            Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
-                            MovieUrlSreen(movieEntity.id)
-                        }
-
+                       item {
+                           MenuScreen(movieEntity)
+                       }
+                       item {
+                           Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
+                           MovieUrlSreen(movieEntity.id)
+                       }
                     }
                 }
             }
@@ -108,7 +110,7 @@ fun WebvieScreen() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio((9 / 16).toFloat())
+            .aspectRatio((16/9.0).toFloat())
     ) {
         WebView(LocalContext.current).apply {
             layoutParams = ViewGroup.LayoutParams(
