@@ -6,8 +6,10 @@ import android.webkit.WebViewClient
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -22,11 +24,16 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.focusModifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.alibaba.fastjson.JSON
@@ -48,15 +55,16 @@ import retrofit2.Response
 
 
 @Composable
-fun MoviePlayerScreen(navController: NavHostController,movieEntity: MovieEntity){
+fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity) {
     MymovieTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
-            Scaffold(modifier = Modifier.fillMaxSize()){
+            Scaffold(modifier = Modifier.fillMaxSize()) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    LaunchedEffect(Unit){
-                        val savePlayRecord: Call<ResultEntity> = RequestUtils.movieInstance.savePlayRecord(movieEntity,)
+                    LaunchedEffect(Unit) {
+                        val savePlayRecord: Call<ResultEntity> =
+                            RequestUtils.movieInstance.savePlayRecord(movieEntity)
                         savePlayRecord.enqueue(object : Callback<ResultEntity> {
                             override fun onResponse(
                                 call: Call<ResultEntity>,
@@ -64,6 +72,7 @@ fun MoviePlayerScreen(navController: NavHostController,movieEntity: MovieEntity)
                             ) {
 
                             }
+
                             override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
                                 println("错误")
                             }
@@ -71,16 +80,22 @@ fun MoviePlayerScreen(navController: NavHostController,movieEntity: MovieEntity)
                     }
                     WebvieScreen()
 
-                    Column(modifier = Modifier
-                        .padding(ThemeSize.containerPadding)
-                        .scrollable(
-                            state = rememberScrollState(0),
-                            orientation = Orientation.Vertical
-                        )
-                        .weight(1F, true)) {
-                        MenuScreen(movieEntity)
-                        Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
-                        MovieUrlSreen(movieEntity.id)
+                    Column(
+                        modifier = Modifier
+                            .padding(ThemeSize.containerPadding)
+                            .weight(1F, true)
+                    ) {
+                        Column(
+                            modifier = Modifier.scrollable(
+                                state = rememberScrollState(0),
+                                orientation = Orientation.Vertical
+                            )
+                        ) {
+                            MenuScreen(movieEntity)
+                            Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
+                            MovieUrlSreen(movieEntity.id)
+                        }
+
                     }
                 }
             }
@@ -89,10 +104,12 @@ fun MoviePlayerScreen(navController: NavHostController,movieEntity: MovieEntity)
 }
 
 @Composable
-fun WebvieScreen(){
-    Column(modifier = Modifier
-        .fillMaxWidth()
-        .aspectRatio((16 / 9).toFloat())) {
+fun WebvieScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .aspectRatio((9 / 16).toFloat())
+    ) {
         WebView(LocalContext.current).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -105,18 +122,19 @@ fun WebvieScreen(){
 }
 
 @Composable
-fun MenuScreen(movieEntity: MovieEntity){
-    val getCommentCount: Call<ResultEntity> = RequestUtils.movieInstance.getCommentCount(movieEntity.id,
+fun MenuScreen(movieEntity: MovieEntity) {
+    val getCommentCount: Call<ResultEntity> = RequestUtils.movieInstance.getCommentCount(
+        movieEntity.id,
         RelationType.MOVIE.name
     )
     var commentCount by remember { mutableStateOf(0) }
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         getCommentCount.enqueue(object : Callback<ResultEntity> {
             override fun onResponse(
                 call: Call<ResultEntity>,
                 response: Response<ResultEntity>
             ) {
-                commentCount =(response.body()?.data as Double).toInt()
+                commentCount = (response.body()?.data as Double).toInt()
             }
 
             override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
@@ -138,11 +156,11 @@ fun MenuScreen(movieEntity: MovieEntity){
 }
 
 @Composable
-fun MovieUrlSreen(movieId:Long){
+fun MovieUrlSreen(movieId: Long) {
 //    val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(movieId)
     val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(72667)
     val movieUrlEntityGroup = remember { mutableStateListOf<List<MovieUrlEntity>>() }
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         getMovieUrl.enqueue(object : Callback<ResultEntity> {
             override fun onResponse(
                 call: Call<ResultEntity>,
@@ -152,20 +170,21 @@ fun MovieUrlSreen(movieId:Long){
                     JSON.toJSONString(response.body()?.data ?: ""),
                     MovieUrlEntity::class.java
                 )
-                if(movieList != null){
-                    for(item in movieList){
-                        var movieUrlList: List<MovieUrlEntity>? = movieUrlEntityGroup.find{
+                if (movieList != null) {
+                    for (item in movieList) {
+                        var movieUrlList: List<MovieUrlEntity>? = movieUrlEntityGroup.find {
                             it.isNotEmpty() && it[0].playGroup == item.playGroup
                         }
                         if (movieUrlList == null) {
                             movieUrlList = listOf(item)
                             movieUrlEntityGroup.add(movieUrlList)
-                        }else{
+                        } else {
                             movieUrlList.plus(item)
                         }
                     }
                 }
             }
+
             override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
                 println("错误")
             }
@@ -179,33 +198,46 @@ fun MovieUrlSreen(movieId:Long){
                 Text(movieList[0].playGroup)
                 Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
                 var index = -1
-                for (item in movieList){
+                for (item in movieList) {
                     index++
                     Row() {
-                        Button(
-                            shape = RoundedCornerShape(ThemeSize.superRadius),
-                            border = BorderStroke(1.dp, ThemeColor.borderColor),
-                            colors = ButtonDefaults.outlinedButtonColors(contentColor = ThemeColor.transparent),
+                        Box(
                             modifier = Modifier
-                                .height(ThemeSize.inputHeight),
-                            onClick = {
-
-                            }) {
-                            Text(text = item.label,style = TextStyle(color = ThemeColor.normalColor))
+                                .border(
+                                    ThemeSize.borderWidth,
+                                    ThemeColor.borderColor,
+                                    RoundedCornerShape(ThemeSize.middleRadius)
+                                )
+                                .height(ThemeSize.inputHeight)
+                                .padding(
+                                    start = ThemeSize.containerPadding,
+                                    end = ThemeSize.containerPadding
+                                )
+                        ) {
+                            Text(
+                                text = item.label,
+                                style = TextStyle(
+                                    color = ThemeColor.normalColor,
+                                    textAlign = TextAlign.Center
+                                ),
+                                modifier = Modifier.align(Alignment.Center) // 文本居中
+                            )
                         }
                     }
-                    if(index != movieList.size - 1){
+                    if (index != movieList.size - 1) {
                         Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                     }
                 }
             }
-            if(i != movieUrlEntityGroup.size - 1){
-                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
-                Divider(modifier = Modifier
-                    .fillMaxWidth()
-                    .background(ThemeColor.colorBg)
-                    .height(1.dp))
-                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+            if (i != movieUrlEntityGroup.size - 1) {
+                Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
+                Divider(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(ThemeColor.colorBg)
+                        .height(1.dp)
+                )
+                Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
             }
         }
     }
