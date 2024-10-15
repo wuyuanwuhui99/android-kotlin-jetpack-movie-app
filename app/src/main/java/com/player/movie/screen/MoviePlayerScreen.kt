@@ -7,6 +7,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -44,14 +44,12 @@ import com.player.R
 import com.player.constant.RelationType
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
-import com.player.movie.entity.CategoryEntity
 import com.player.movie.entity.MovieEntity
 import com.player.movie.entity.MovieUrlEntity
 import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
 import com.player.theme.ThemeStyle
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -65,6 +63,7 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
         ) {
             Scaffold(modifier = Modifier.fillMaxSize()) {
                 Column(modifier = Modifier.fillMaxSize()) {
+                    val url = remember{ mutableStateOf("")}
                     LaunchedEffect(Unit) {
                         val savePlayRecord: Call<ResultEntity> =
                             RequestUtils.movieInstance.savePlayRecord(movieEntity)
@@ -81,13 +80,15 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
                             }
                         })
                     }
-                    WebvieScreen()
-
+                    WebvieScreen(url.value)
                     LazyColumn(
                        horizontalAlignment = Alignment.Start,
                        verticalArrangement = Arrangement.Top,
                         modifier = Modifier
-                            .scrollable(state = rememberScrollState(0),orientation = Orientation.Vertical)
+                            .scrollable(
+                                state = rememberScrollState(0),
+                                orientation = Orientation.Vertical
+                            )
                             .padding(ThemeSize.containerPadding)
                             .weight(1F)
                     ) {
@@ -96,7 +97,7 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
                        }
                        item {
                            Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
-                           MovieUrlSreen(movieEntity.id)
+                           MovieUrlSreen(movieEntity.id,url)
                        }
                     }
                 }
@@ -106,20 +107,24 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
 }
 
 @Composable
-fun WebvieScreen() {
+fun WebvieScreen(url:String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .aspectRatio((16/9.0).toFloat())
+            .aspectRatio((16 / 9.0).toFloat())
+            .background(ThemeColor.normalColor)
     ) {
-        WebView(LocalContext.current).apply {
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            webViewClient = WebViewClient()
-            loadUrl("www.baidu.com")
+        if("" != url){
+            WebView(LocalContext.current).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+                webViewClient = WebViewClient()
+                loadUrl(url)
+            }
         }
+
     }
 }
 
@@ -145,20 +150,61 @@ fun MenuScreen(movieEntity: MovieEntity) {
         })
     }
 
-    Row(modifier = ThemeStyle.boxDecoration) {
+    Row(
+        verticalAlignment=Alignment.CenterVertically,
+        modifier = ThemeStyle.boxDecoration) {
         Image(
             painter = painterResource(id = R.mipmap.icon_comment),
             modifier = Modifier
                 .size(ThemeSize.middleIcon),
             contentDescription = ""
         )
-        Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
-        Text(text = commentCount.toString())
+        Spacer(modifier = Modifier.width(ThemeSize.smallMargin))
+        Text(text = commentCount.toString(), modifier = Modifier.weight(1f))
+        var isFavorite by remember { mutableStateOf(false) }
+        LaunchedEffect(Unit) {
+//            val isFavoriteCall: Call<ResultEntity> = RequestUtils.movieInstance.isFavorite(movieEntity.id)
+            val isFavoriteCall: Call<ResultEntity> = RequestUtils.movieInstance.isFavorite(72667)
+            isFavoriteCall.enqueue(object : Callback<ResultEntity> {
+                override fun onResponse(
+                    call: Call<ResultEntity>,
+                    response: Response<ResultEntity>
+                ) {
+
+                }
+
+                override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
+                    println("错误")
+                }
+            })
+        }
+        if(isFavorite){
+            Image(
+                painter = painterResource(R.mipmap.icon_collection_active),
+                modifier = Modifier
+                    .size(ThemeSize.middleIcon),
+                contentDescription = ""
+            )
+        }else{
+            Image(
+                painter = painterResource(R.mipmap.icon_collection),
+                modifier = Modifier
+                    .size(ThemeSize.middleIcon),
+                contentDescription = ""
+            )
+        }
+        Spacer(modifier = Modifier.width(ThemeSize.smallMargin))
+        Image(
+            painter = painterResource(id = R.mipmap.icon_share),
+            modifier = Modifier
+                .size(ThemeSize.middleIcon),
+            contentDescription = ""
+        )
     }
 }
 
 @Composable
-fun MovieUrlSreen(movieId: Long) {
+fun MovieUrlSreen(movieId: Long,url:MutableState<String>) {
 //    val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(movieId)
     val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(72667)
     val movieUrlEntityGroup = remember { mutableStateListOf<List<MovieUrlEntity>>() }
@@ -202,12 +248,15 @@ fun MovieUrlSreen(movieId: Long) {
                 var index = -1
                 for (item in movieList) {
                     index++
+                    if(url.value != ""){
+                        url.value = item.url.toString()
+                    }
                     Row() {
                         Box(
                             modifier = Modifier
                                 .border(
                                     ThemeSize.borderWidth,
-                                    ThemeColor.borderColor,
+                                    if(url.value == item.url && url.value != "") ThemeColor.selectedColor else ThemeColor.borderColor,
                                     RoundedCornerShape(ThemeSize.middleRadius)
                                 )
                                 .height(ThemeSize.inputHeight)
@@ -222,7 +271,9 @@ fun MovieUrlSreen(movieId: Long) {
                                     color = ThemeColor.normalColor,
                                     textAlign = TextAlign.Center
                                 ),
-                                modifier = Modifier.align(Alignment.Center) // 文本居中
+                                modifier = Modifier.align(Alignment.Center).clickable {
+                                    url.value = item.url.toString()
+                                }
                             )
                         }
                     }

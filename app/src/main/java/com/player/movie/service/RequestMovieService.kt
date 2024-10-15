@@ -84,4 +84,6 @@ interface RequestMovieService {
 
     @GET(Api.GETMOVIEURL)
     fun getMovieUrl(@Query("movieId")movieId:Long): Call<ResultEntity>
+    @GET(Api.ISFAVORITE)
+    fun isFavorite(@Query("movieId")movieId:Long):Call<ResultEntity>
 }
