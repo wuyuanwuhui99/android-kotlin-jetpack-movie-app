@@ -1,8 +1,10 @@
 package com.player.movie.screen
 
+import android.content.Context
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -93,7 +95,7 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
                             .weight(1F)
                     ) {
                        item {
-                           MenuScreen(movieEntity)
+                           MenuScreen(movieEntity, LocalContext.current)
                        }
                        item {
                            Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
@@ -129,7 +131,7 @@ fun WebvieScreen(url:String) {
 }
 
 @Composable
-fun MenuScreen(movieEntity: MovieEntity) {
+fun MenuScreen(movieEntity: MovieEntity,context:Context) {
     val getCommentCount: Call<ResultEntity> = RequestUtils.movieInstance.getCommentCount(
         movieEntity.id,
         RelationType.MOVIE.name
@@ -170,29 +172,51 @@ fun MenuScreen(movieEntity: MovieEntity) {
                     call: Call<ResultEntity>,
                     response: Response<ResultEntity>
                 ) {
-
+                    isFavorite = (response.body()?.data as Double).toFloat() > 0
                 }
-
                 override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
                     println("错误")
                 }
             })
         }
-        if(isFavorite){
-            Image(
-                painter = painterResource(R.mipmap.icon_collection_active),
-                modifier = Modifier
-                    .size(ThemeSize.middleIcon),
-                contentDescription = ""
-            )
-        }else{
-            Image(
-                painter = painterResource(R.mipmap.icon_collection),
-                modifier = Modifier
-                    .size(ThemeSize.middleIcon),
-                contentDescription = ""
-            )
-        }
+        Image(
+            painter = painterResource(if(isFavorite)R.mipmap.icon_collection_active else R.mipmap.icon_collection),
+            modifier = Modifier
+                .size(ThemeSize.middleIcon)
+                .clickable {
+                    if (isFavorite){
+                        val deleteFavoriteCall: Call<ResultEntity> = RequestUtils.movieInstance.deleteFavorite(72667)
+                        deleteFavoriteCall.enqueue(object : Callback<ResultEntity> {
+                            override fun onResponse(
+                                call: Call<ResultEntity>,
+                                response: Response<ResultEntity>
+                            ) {
+                                isFavorite = false
+                                Toast.makeText(context,"取消收藏成功", Toast.LENGTH_SHORT).show()
+                            }
+                            override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
+                                println("错误")
+                            }
+                        })
+                    }else{
+                        val saveFavoriteCall: Call<ResultEntity> = RequestUtils.movieInstance.saveFavorite(72667)
+                        saveFavoriteCall.enqueue(object : Callback<ResultEntity> {
+                            override fun onResponse(
+                                call: Call<ResultEntity>,
+                                response: Response<ResultEntity>
+                            ) {
+                                isFavorite = true
+                                Toast.makeText(context,"添加收藏成功", Toast.LENGTH_SHORT).show()
+                            }
+                            override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
+                                println("错误")
+                            }
+                        })
+                    }
+                }
+            ,
+            contentDescription = ""
+        )
         Spacer(modifier = Modifier.width(ThemeSize.smallMargin))
         Image(
             painter = painterResource(id = R.mipmap.icon_share),

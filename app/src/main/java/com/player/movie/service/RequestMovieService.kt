@@ -84,6 +84,16 @@ interface RequestMovieService {
 
     @GET(Api.GETMOVIEURL)
     fun getMovieUrl(@Query("movieId")movieId:Long): Call<ResultEntity>
+
     @GET(Api.ISFAVORITE)
     fun isFavorite(@Query("movieId")movieId:Long):Call<ResultEntity>
+
+    // 删除收藏
+    @DELETE(Api.DELETEFAVORITE)
+    fun deleteFavorite(@Path("movieId")movieId:Long):Call<ResultEntity>
+
+    // 添加收藏
+    @DELETE(Api.SAVEFAVORITE)
+    fun saveFavorite(@Path("movieId")movieId:Long):Call<ResultEntity>
+
 }

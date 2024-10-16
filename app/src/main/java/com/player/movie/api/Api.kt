@@ -18,8 +18,8 @@ object Api {
     const val GETPLAYRECORD = "/service/movie-getway/getPlayRecord" //获取观看记录
     const val SAVEPLAYRECORD = "/service/movie-getway/savePlayRecord" //播放记录
     const val GETFAVORITE = "/service/movie-getway/getFavorite" //获取收藏电影
-    const val SAVEFAVORITE = "/service/movie-getway/saveFavorite" //添加收藏
-    const val DELETEFAVORITE = "/service/movie-getway/deleteFavorite" //删除收藏
+    const val SAVEFAVORITE = "/service/movie-getway/saveFavorite/{movieId}" //添加收藏
+    const val DELETEFAVORITE = "/service/movie-getway/deleteFavorite/{movieId}" //删除收藏
     const val GETYOURLIKES = "/service/movie/getYourLikes" //猜你想看
     const val GETRECOMMEND = "/service/movie/getRecommend" //获取推荐
     const val ISFAVORITE = "/service/movie-getway/isFavorite" //查询是否已经收藏
