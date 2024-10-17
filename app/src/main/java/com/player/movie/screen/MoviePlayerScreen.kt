@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -31,10 +30,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusModifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -65,7 +60,7 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
         ) {
             Scaffold(modifier = Modifier.fillMaxSize()) {
                 Column(modifier = Modifier.fillMaxSize()) {
-                    val url = remember{ mutableStateOf("")}
+                    val movieUrlEntity = remember{ mutableStateOf(MovieUrlEntity())}
                     LaunchedEffect(Unit) {
                         val savePlayRecord: Call<ResultEntity> =
                             RequestUtils.movieInstance.savePlayRecord(movieEntity)
@@ -82,7 +77,7 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
                             }
                         })
                     }
-                    WebvieScreen(url.value)
+                    WebvieScreen(movieUrlEntity.value.url)
                     LazyColumn(
                        horizontalAlignment = Alignment.Start,
                        verticalArrangement = Arrangement.Top,
@@ -99,7 +94,10 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
                        }
                        item {
                            Spacer(modifier = Modifier.height(ThemeSize.smallMargin))
-                           MovieUrlSreen(movieEntity.id,url)
+                           MovieUrlSreen(movieEntity.id,movieUrlEntity)
+                       }
+                       item {
+                           RecommendScreen(navController = navController,movieEntity = movieEntity)
                        }
                     }
                 }
@@ -109,14 +107,14 @@ fun MoviePlayerScreen(navController: NavHostController, movieEntity: MovieEntity
 }
 
 @Composable
-fun WebvieScreen(url:String) {
+fun WebvieScreen(url:String?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .aspectRatio((16 / 9.0).toFloat())
             .background(ThemeColor.normalColor)
     ) {
-        if("" != url){
+        if("" != url && url != null){
             WebView(LocalContext.current).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -228,7 +226,7 @@ fun MenuScreen(movieEntity: MovieEntity,context:Context) {
 }
 
 @Composable
-fun MovieUrlSreen(movieId: Long,url:MutableState<String>) {
+fun MovieUrlSreen(movieId: Long,movieUrlEntity:MutableState<MovieUrlEntity>) {
 //    val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(movieId)
     val getMovieUrl: Call<ResultEntity> = RequestUtils.movieInstance.getMovieUrl(72667)
     val movieUrlEntityGroup = remember { mutableStateListOf<List<MovieUrlEntity>>() }
@@ -272,15 +270,15 @@ fun MovieUrlSreen(movieId: Long,url:MutableState<String>) {
                 var index = -1
                 for (item in movieList) {
                     index++
-                    if(url.value != ""){
-                        url.value = item.url.toString()
+                    if(movieUrlEntity.value.id == 0){
+                        movieUrlEntity.value = item
                     }
                     Row() {
                         Box(
                             modifier = Modifier
                                 .border(
                                     ThemeSize.borderWidth,
-                                    if(url.value == item.url && url.value != "") ThemeColor.selectedColor else ThemeColor.borderColor,
+                                    if(movieUrlEntity.value.id == item.id) ThemeColor.selectedColor else ThemeColor.borderColor,
                                     RoundedCornerShape(ThemeSize.middleRadius)
                                 )
                                 .height(ThemeSize.inputHeight)
@@ -292,11 +290,11 @@ fun MovieUrlSreen(movieId: Long,url:MutableState<String>) {
                             Text(
                                 text = item.label,
                                 style = TextStyle(
-                                    color = ThemeColor.normalColor,
+                                    color = if(movieUrlEntity.value.id == item.id)ThemeColor.selectedColor else ThemeColor.normalColor,
                                     textAlign = TextAlign.Center
                                 ),
                                 modifier = Modifier.align(Alignment.Center).clickable {
-                                    url.value = item.url.toString()
+                                    movieUrlEntity.value = item
                                 }
                             )
                         }
@@ -319,3 +317,4 @@ fun MovieUrlSreen(movieId: Long,url:MutableState<String>) {
         }
     }
 }
+
