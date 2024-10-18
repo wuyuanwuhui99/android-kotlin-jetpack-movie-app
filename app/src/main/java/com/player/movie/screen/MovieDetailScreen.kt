@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,14 +21,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +50,8 @@ import com.player.movie.component.TitleComponent
 import com.player.movie.entity.CategoryEntity
 import com.player.movie.entity.MovieEntity
 import com.player.movie.entity.MovieStarEntity
+import com.player.movie.entity.MovieUrlEntity
+import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
 import com.player.theme.ThemeStyle
@@ -55,31 +62,39 @@ import retrofit2.Response
 
 @Composable
 fun MovieDetailScreen(navController: NavHostController, movieEntity: MovieEntity) {
-    LazyColumn(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = ThemeSize.containerPadding, end = ThemeSize.containerPadding)
-            .scrollable(
-                state = rememberScrollState(0),
-                orientation = Orientation.Vertical
-            )
-    ) {
-        item {
-            MovieInfoScreen(navController = navController,movieEntity = movieEntity)
-        }
-        item {
-            PlotScreen(plot = movieEntity.plot)
-        }
+    MymovieTheme {
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Scaffold(modifier = Modifier.fillMaxSize()) {
+                LazyColumn(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = ThemeSize.containerPadding, end = ThemeSize.containerPadding)
+                        .scrollable(
+                            state = rememberScrollState(0),
+                            orientation = Orientation.Vertical
+                        )
+                ) {
+                    item {
+                        MovieInfoScreen(navController = navController,movieEntity = movieEntity)
+                    }
+                    item {
+                        PlotScreen(plot = movieEntity.plot)
+                    }
 
-        item {
-            StarScreen(movieId = movieEntity.movieId)
-        }
-        item {
-            RecommendScreen(navController = navController,movieEntity = movieEntity)
-        }
+                    item {
+                        StarScreen(movieId = movieEntity.movieId)
+                    }
+                    item {
+                        RecommendScreen(navController = navController,movieEntity = movieEntity)
+                    }
 
+                }
+            }
+        }
     }
 }
 
@@ -88,8 +103,26 @@ fun MovieDetailScreen(navController: NavHostController, movieEntity: MovieEntity
  * @date 2024-09-22 22:54
  * @author wuwenqiang
  */
+/**
+ * @desc 电影主要信息
+ * @date 2024-09-22 22:54
+ * @author wuwenqiang
+ */
 @Composable
 fun MovieInfoScreen(navController: NavHostController,movieEntity: MovieEntity){
+    LaunchedEffect(Unit){
+        val saveViewRecord: Call<ResultEntity> = RequestUtils.movieInstance.saveViewRecord(movieEntity)
+        saveViewRecord.enqueue(object : Callback<ResultEntity> {
+            override fun onResponse(
+                call: Call<ResultEntity>,
+                response: Response<ResultEntity>
+            ) {}
+
+            override fun onFailure(call: Call<ResultEntity>, t: Throwable) {
+                println("错误")
+            }
+        })
+    }
     Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
     Row(modifier = ThemeStyle.boxDecoration) {
         Box(
@@ -159,6 +192,11 @@ fun MovieInfoScreen(navController: NavHostController,movieEntity: MovieEntity){
  * @date 2024-09-22 22:54
  * @author wuwenqiang
  */
+/**
+ * @desc 剧情
+ * @date 2024-09-22 22:54
+ * @author wuwenqiang
+ */
 @Composable
 fun PlotScreen(plot:String){
     Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
@@ -172,6 +210,11 @@ fun PlotScreen(plot:String){
     }
 }
 
+/**
+ * @desc 获取演员
+ * @date 2024-09-22 22:54
+ * @author wuwenqiang
+ */
 /**
  * @desc 获取演员
  * @date 2024-09-22 22:54
@@ -232,6 +275,11 @@ fun StarScreen(movieId:Long){
     }
 }
 
+/**
+ * @desc 推荐歌曲
+ * @date 2024-09-22 22:54
+ * @author wuwenqiang
+ */
 /**
  * @desc 推荐歌曲
  * @date 2024-09-22 22:54

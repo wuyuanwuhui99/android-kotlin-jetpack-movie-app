@@ -82,6 +82,9 @@ interface RequestMovieService {
     @POST(Api.SAVEPLAYRECORD)
     fun savePlayRecord(@Body movieEntity: MovieEntity): Call<ResultEntity>
 
+    @POST(Api.SAVEVIEWRECORD)
+    fun saveViewRecord(@Body movieEntity: MovieEntity): Call<ResultEntity>
+
     @GET(Api.GETMOVIEURL)
     fun getMovieUrl(@Query("movieId")movieId:Long): Call<ResultEntity>
 
