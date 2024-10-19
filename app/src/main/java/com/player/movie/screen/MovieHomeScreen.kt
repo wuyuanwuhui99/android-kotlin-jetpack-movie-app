@@ -43,7 +43,7 @@ fun MovieHomeScreen(userViewModel:UserViewModel,navController: NavHostController
             item {
                 Spacer(modifier = Modifier
                     .height(ThemeSize.containerPadding))
-                SearchComponent(userViewModel,classify = "电影")
+                SearchComponent(userViewModel,classify = "电影", navController = navController)
                 Spacer(modifier = Modifier
                     .height(ThemeSize.containerPadding))
                 Banner("轮播","电影")

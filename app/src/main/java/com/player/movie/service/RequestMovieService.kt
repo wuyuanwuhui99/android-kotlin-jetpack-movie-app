@@ -1,6 +1,5 @@
 package com.player.movie.service
 
-import com.player.constant.RelationType
 import com.player.http.ResultEntity
 import com.player.movie.api.Api
 import com.player.movie.entity.MovieEntity

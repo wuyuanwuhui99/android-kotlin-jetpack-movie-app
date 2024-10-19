@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.alibaba.fastjson.JSON
 import com.player.http.RequestUtils
 import com.player.http.ResultEntity
@@ -24,14 +25,15 @@ import retrofit2.Response
 @Composable
 fun SearchComponent (
     userViewModel:UserViewModel = viewModel(),
-    classify:String
+    classify:String,
+    navController: NavHostController
 ){
 
     Row(
         modifier = ThemeStyle.boxDecoration
     ) {
         var keyword = remember { mutableStateOf("") }
-        AvaterComponent(userViewModel,ThemeSize.middleAvater)
+        AvaterComponent(userViewModel,ThemeSize.middleAvater,navController)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier

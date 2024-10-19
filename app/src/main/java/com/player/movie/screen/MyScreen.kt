@@ -93,7 +93,7 @@ fun UserProfile(userViewModel:UserViewModel,navController: NavHostController){
         },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AvaterComponent(userViewModel, ThemeSize.bigAvater)
+        AvaterComponent(userViewModel=userViewModel, size=ThemeSize.bigAvater,navController = navController)
         Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
         Column(modifier = Modifier.weight(1F, true)) {
             Text(text = userViewModel.username.value, style = mainTextStyle)
