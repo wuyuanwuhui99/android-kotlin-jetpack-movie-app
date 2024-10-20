@@ -99,7 +99,7 @@ fun UserScreen( navController: NavHostController,userViewModel: UserViewModel) {
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = "头像",modifier = Modifier.weight(1f))
-                        AvaterComponent(size = ThemeSize.bigAvater,userViewModel=userViewModel)
+                        AvaterComponent(size = ThemeSize.bigAvater,userViewModel=userViewModel, navController = null)
                         Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                         Image(
                             painter = painterResource(id = R.mipmap.icon_arrow),

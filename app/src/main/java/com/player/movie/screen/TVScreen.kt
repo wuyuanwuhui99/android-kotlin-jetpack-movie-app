@@ -42,7 +42,7 @@ fun TVScreen(userViewModel: UserViewModel,navController: NavHostController,value
             item {
                 Spacer(modifier = Modifier
                     .height(ThemeSize.containerPadding))
-                SearchComponent(userViewModel,classify = "电视剧")
+                SearchComponent(userViewModel,"电视剧",navController)
                 Spacer(modifier = Modifier
                     .height(ThemeSize.containerPadding))
                 Banner("轮播","电视剧")

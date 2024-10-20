@@ -41,7 +41,7 @@ fun MovieScreen(userViewModel: UserViewModel,navController: NavHostController,va
             item {
                 Spacer(modifier = Modifier
                     .height(ThemeSize.containerPadding))
-                SearchComponent(userViewModel,classify = "电影")
+                SearchComponent(userViewModel,classify = "电影",navController)
                 Spacer(modifier = Modifier
                     .height(ThemeSize.containerPadding))
                 Banner("轮播","电影")
