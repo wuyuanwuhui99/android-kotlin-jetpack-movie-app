@@ -64,7 +64,18 @@ fun NavHostApp(innerPadding: PaddingValues, viewModel: UserViewModel){
             MoviePlayerScreen(navController,movieEntity)
         }
         composable(RouteList.UserScreen.description){
-            MovieSearchScreen(navController,viewModel)
+
+        }
+        composable(
+            RouteList.MovieSearchScreen.description,listOf(
+                // 设置默认值
+                navArgument("keyword") {
+                    type = NavType.StringType
+                    defaultValue = ""
+                }
+            )) { backStackEntry ->
+            val keyword = backStackEntry.arguments?.getString("keyword")
+            MovieSearchScreen(navController,viewModel,keyword!!)
         }
     }
 }
