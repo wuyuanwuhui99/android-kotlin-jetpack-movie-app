@@ -4,6 +4,7 @@ import android.renderscript.ScriptGroup.Input
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -15,6 +16,9 @@ import androidx.compose.material.Surface
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,15 +46,15 @@ fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewM
                     .padding(ThemeSize.containerPadding)
 
             ) {
-                SearchInput(keyword)
-
+                val inputValue = remember{ mutableStateOf(keyword) }
+                SearchInput(inputValue)
             }
         }
     }
 }
 
 @Composable
-fun SearchInput(value:String){
+fun SearchInput(inputValue: MutableState<String>){
     Row(
         modifier = ThemeStyle.boxDecoration
     ) {
@@ -62,7 +66,7 @@ fun SearchInput(value:String){
                 .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
         ) {
             TextField(
-                value = value,
+                value = inputValue.value,
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = ThemeColor.transparent,
                     focusedIndicatorColor=ThemeColor.transparent
@@ -74,20 +78,25 @@ fun SearchInput(value:String){
                     .border(
                         ThemeSize.borderWidth,
                         ThemeColor.colorBg,
-//                        RoundedCornerShape(ThemeSize.middleRadius)
                     )
                     .weight(1f),
                 onValueChange = {
-
+                    inputValue.value = it
                 }
             )
-            Image(
-                painter = painterResource(id = R.mipmap.icon_clear),
-                modifier = Modifier
-                    .size(ThemeSize.bigIcon)
-                    .padding(0.dp, 0.dp, 0.dp, ThemeSize.smallMargin),
-                contentDescription = ""
-            )
+            if(inputValue.value != ""){
+                Image(
+                    painter = painterResource(id = R.mipmap.icon_clear),
+                    modifier = Modifier
+                        .size(ThemeSize.bigIcon)
+                        .padding(0.dp, 0.dp, 0.dp, ThemeSize.smallMargin)
+                        .clickable {
+                            inputValue.value = ""
+                        },
+                    contentDescription = ""
+                )
+            }
+
         }
 
     }
