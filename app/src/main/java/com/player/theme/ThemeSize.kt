@@ -9,7 +9,7 @@ object ThemeSize {
     val bigRadius = 20.dp;// 圆角大小
     val superRadius = 30.dp;// 加大版圆角
     val minBtnRadius = 5.sp;// 小圆角
-    val middleBtnWidth = 70.sp;// 中等按钮宽度
+    val middleBtnWidth = 90.dp;// 中等按钮宽度
     val middleBtnHeight = 35.dp;// 中等按钮高度
     val swiperHeight = 180.dp; // 轮播高度
     val movieWidth = 150.dp; // 电影图片宽度
@@ -36,6 +36,5 @@ object ThemeSize {
     val minPlayIcon = 80.sp;// 音乐播放器圈圈大小
     val lineHeight = 30.dp// 竖线高度
     val lineWidth = 3.dp// 竖线宽度
-    val inputHeight = 55.dp// 输入框的高度
-
+    val inputHeight = 50.dp// 输入框的高度
 }

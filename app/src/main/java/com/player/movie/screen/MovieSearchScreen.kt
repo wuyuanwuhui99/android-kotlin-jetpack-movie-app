@@ -6,13 +6,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -23,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 
 import androidx.navigation.NavHostController
@@ -61,7 +68,8 @@ fun SearchInput(inputValue: MutableState<String>){
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .height(ThemeSize.middleAvater)
+                .weight(1f)
+                .height(ThemeSize.inputHeight)
                 .padding(ThemeSize.smallMargin, 0.dp, 0.dp, 0.dp)
                 .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
         ) {
@@ -98,6 +106,20 @@ fun SearchInput(inputValue: MutableState<String>){
             }
 
         }
+        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+        Button(
+            shape = RoundedCornerShape(ThemeSize.superRadius),
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = ThemeColor.activeColor
+            ),
+            modifier = Modifier
+                .height(ThemeSize.inputHeight)
+                .width(ThemeSize.middleBtnWidth)
+            ,
+            onClick = {
 
+            }) {
+            Text(text = "搜索",style = TextStyle(color = ThemeColor.colorWhite))
+        }
     }
 }
