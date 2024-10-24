@@ -43,7 +43,7 @@ fun SearchComponent (
                 .height(ThemeSize.middleAvater)
                 .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
                 .clickable {
-                    navController.navigate("MovieSearchScreen?keyword=${keyword.value}")
+                    navController.navigate("MovieSearchScreen?data=${keyword.value}")
                 }
         ) {
             val getKeyWordService: Call<ResultEntity> = RequestUtils.movieInstance.getKeyWord(classify)

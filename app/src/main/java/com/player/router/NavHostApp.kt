@@ -69,12 +69,12 @@ fun NavHostApp(innerPadding: PaddingValues, viewModel: UserViewModel){
         composable(
             RouteList.MovieSearchScreen.description,listOf(
                 // 设置默认值
-                navArgument("keyword") {
+                navArgument("data") {
                     type = NavType.StringType
                     defaultValue = ""
                 }
             )) { backStackEntry ->
-            val keyword = backStackEntry.arguments?.getString("keyword")
+            val keyword = backStackEntry.arguments?.getString("data")
             MovieSearchScreen(navController,viewModel,keyword!!)
         }
     }
@@ -89,5 +89,5 @@ enum class RouteList(val description: String) {
     MovieDetailScreen("MovieDetailScreen?data={data}"),
     UserScreen("UserScreen"),
     MoviePlayerScreen("MoviePlayerScreen?data={data}"),
-    MovieSearchScreen("MovieSearchScreen")
+    MovieSearchScreen("MovieSearchScreen?data={data}")
 }
