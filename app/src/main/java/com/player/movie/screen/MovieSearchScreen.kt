@@ -4,13 +4,21 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -28,11 +36,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 import androidx.navigation.NavHostController
 import com.player.R
 import com.player.model.UserViewModel
+import com.player.movie.component.TitleComponent
 import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
@@ -47,12 +57,31 @@ fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewM
             Scaffold(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(ThemeColor.colorBg)
-                    .padding(ThemeSize.containerPadding)
-
             ) {
                 val inputValue = remember{ mutableStateOf(keyword) }
-                SearchInput(inputValue)
+                LazyColumn(
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            start = ThemeSize.containerPadding,
+                            end = ThemeSize.containerPadding
+                        )
+                        .scrollable(
+                            state = rememberScrollState(0),
+                            orientation = Orientation.Vertical
+                        )
+                ) {
+                    item {
+                        SearchInput(inputValue)
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
+                        SearchHistory()
+                    }
+                }
+
             }
         }
     }
@@ -118,6 +147,41 @@ fun SearchInput(inputValue: MutableState<String>){
 
             }) {
             Text(text = "搜索",style = TextStyle(color = ThemeColor.colorWhite))
+        }
+    }
+}
+
+@Composable
+fun SearchHistory(){
+    Column(
+        modifier = ThemeStyle.boxDecoration
+    ) {
+        TitleComponent("搜索历史")
+        Row(){
+            Box(
+                modifier = Modifier
+                    .height(ThemeSize.middleAvater)
+                    .padding(ThemeSize.containerPadding,0.dp,ThemeSize.containerPadding,0.dp)
+                    .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
+            ) {
+                Text(
+                    text = "毒液：最后一舞",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .padding(ThemeSize.containerPadding,0.dp,ThemeSize.containerPadding,0.dp)
+                    .height(ThemeSize.middleAvater)
+                    .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
+            ) {
+                Text(
+                    text = "变形金刚：起源",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.Center)
+                )
+            }
         }
     }
 }
