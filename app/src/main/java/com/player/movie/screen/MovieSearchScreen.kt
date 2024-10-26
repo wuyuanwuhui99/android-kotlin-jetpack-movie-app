@@ -97,7 +97,7 @@ fun SearchInput(inputValue: MutableState<String>){
             modifier = Modifier
                 .weight(1f)
                 .height(ThemeSize.inputHeight)
-                .padding(ThemeSize.smallMargin, 0.dp, ThemeSize.smallMargin, 0.dp)
+                .padding(ThemeSize.smallMargin, 0.dp, 0.dp, 0.dp)
                 .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
         ) {
             TextField(
@@ -123,15 +123,14 @@ fun SearchInput(inputValue: MutableState<String>){
                 Image(
                     painter = painterResource(id = R.mipmap.icon_clear),
                     modifier = Modifier
-                        .size(ThemeSize.bigIcon)
-                        .padding(0.dp, 0.dp, 0.dp, ThemeSize.smallMargin)
+                        .size(ThemeSize.middleIcon)
                         .clickable {
                             inputValue.value = ""
                         },
                     contentDescription = ""
                 )
             }
-
+            Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
         }
         Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
         Button(
@@ -157,30 +156,34 @@ fun SearchHistory(){
         modifier = ThemeStyle.boxDecoration
     ) {
         TitleComponent("搜索历史")
+        Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
         Row(){
-            Box(
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .height(ThemeSize.middleAvater)
-                    .padding(ThemeSize.containerPadding,0.dp,ThemeSize.containerPadding,0.dp)
                     .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
             ) {
+                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                 Text(
                     text = "毒液：最后一舞",
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.align(Alignment.Center)
                 )
+                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
             }
-            Box(
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(ThemeSize.containerPadding,0.dp,ThemeSize.containerPadding,0.dp)
+                    .padding(ThemeSize.containerPadding, 0.dp, ThemeSize.containerPadding, 0.dp)
                     .height(ThemeSize.middleAvater)
                     .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
             ) {
+                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
                 Text(
                     text = "变形金刚：起源",
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.align(Alignment.Center)
                 )
+                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
             }
         }
     }
