@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -40,6 +39,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 
 import androidx.navigation.NavHostController
+import com.google.accompanist.flowlayout.FlowRow
 import com.player.R
 import com.player.model.UserViewModel
 import com.player.movie.component.TitleComponent
@@ -157,7 +157,13 @@ fun SearchHistory(){
     ) {
         TitleComponent("搜索历史")
         Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
-        Row(){
+        FlowRow(
+            modifier = Modifier
+                .fillMaxSize()
+            ,
+            mainAxisSpacing = ThemeSize.containerPadding,
+            crossAxisSpacing = ThemeSize.containerPadding
+        ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
@@ -174,7 +180,20 @@ fun SearchHistory(){
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(ThemeSize.containerPadding, 0.dp, ThemeSize.containerPadding, 0.dp)
+                    .height(ThemeSize.middleAvater)
+                    .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
+            ) {
+                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+                Text(
+                    text = "变形金刚：起源",
+                    textAlign = TextAlign.Center,
+                )
+                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
                     .height(ThemeSize.middleAvater)
                     .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
             ) {
