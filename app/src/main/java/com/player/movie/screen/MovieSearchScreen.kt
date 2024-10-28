@@ -27,6 +27,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,6 +44,8 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.player.R
 import com.player.model.UserViewModel
 import com.player.movie.component.TitleComponent
+import com.player.movie.database.SearchWordDatabase
+import com.player.movie.entity.SearchWordEntity
 import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
@@ -164,6 +167,10 @@ fun SearchHistory(){
             mainAxisSpacing = ThemeSize.containerPadding,
             crossAxisSpacing = ThemeSize.containerPadding
         ) {
+            LaunchedEffect(Unit){
+                val database: SearchWordDatabase? = SearchWordDatabase.getInstance(this)
+                val searchWordList: List<SearchWordEntity>? = database?.searchWordDao()?.query() as List<SearchWordEntity>?
+            }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
