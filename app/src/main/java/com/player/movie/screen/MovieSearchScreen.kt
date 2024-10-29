@@ -1,5 +1,6 @@
 package com.player.movie.screen
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,18 +39,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.activity.viewModels
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.google.accompanist.flowlayout.FlowRow
+import com.player.BaseApplication
 import com.player.R
 import com.player.model.UserViewModel
 import com.player.movie.component.TitleComponent
-import com.player.movie.database.SearchWordDatabase
-import com.player.movie.entity.SearchWordEntity
+import com.player.movie.database.AppSqliteDataBase
+import com.player.movie.database.MovieSearchHistoryDatabase
+import com.player.movie.entity.MovieSearchHistoryEntity
+import com.player.movie.model.SearchHistoryViewModel
 import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
 import com.player.theme.ThemeStyle
+
+//val searchHistoryViewModel by viewModels<SearchHistoryViewModel>(factoryProducer = {
+//    object : ViewModelProvider.Factory {
+//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+//            return SearchHistoryViewModel(
+//                BaseApplication.SHDB
+//            ) as T
+//        }
+//    }
+//})
 
 @Composable
 fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewModel,keyword:String) {
@@ -62,6 +79,7 @@ fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewM
                     .fillMaxSize()
             ) {
                 val inputValue = remember{ mutableStateOf(keyword) }
+                val context = LocalContext.current
                 LazyColumn(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Top,
@@ -81,7 +99,7 @@ fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewM
                     }
                     item {
                         Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
-                        SearchHistory()
+                        SearchHistory(context)
                     }
                 }
 
@@ -154,7 +172,7 @@ fun SearchInput(inputValue: MutableState<String>){
 }
 
 @Composable
-fun SearchHistory(){
+fun SearchHistory(context: Context){
     Column(
         modifier = ThemeStyle.boxDecoration
     ) {
@@ -168,8 +186,8 @@ fun SearchHistory(){
             crossAxisSpacing = ThemeSize.containerPadding
         ) {
             LaunchedEffect(Unit){
-                val database: SearchWordDatabase? = SearchWordDatabase.getInstance(this)
-                val searchWordList: List<SearchWordEntity>? = database?.searchWordDao()?.query() as List<SearchWordEntity>?
+                val database: AppSqliteDataBase = MovieSearchHistoryDatabase.init(context)
+                val searchWordList: MutableList<MovieSearchHistoryEntity> = database.searchHistoryDao().getAllHistory()
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
