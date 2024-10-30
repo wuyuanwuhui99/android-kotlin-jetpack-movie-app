@@ -186,8 +186,10 @@ fun SearchHistory(context: Context){
             crossAxisSpacing = ThemeSize.containerPadding
         ) {
             LaunchedEffect(Unit){
-                val database: AppSqliteDataBase = MovieSearchHistoryDatabase.init(context)
-                val searchWordList: MutableList<MovieSearchHistoryEntity> = database.searchHistoryDao().getAllHistory()
+//                val database: AppSqliteDataBase = MovieSearchHistoryDatabase.init(context)
+//                val searchWordList: MutableList<MovieSearchHistoryEntity> = database.searchHistoryDao().getAllHistory()
+                val searchWordList:MutableList<MovieSearchHistoryEntity> = BaseApplication.SHDB.searchHistoryDao().getAllHistory()
+                println(searchWordList)
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
