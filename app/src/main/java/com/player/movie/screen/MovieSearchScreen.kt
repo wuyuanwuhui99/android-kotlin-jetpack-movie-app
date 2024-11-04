@@ -49,10 +49,7 @@ import com.player.BaseApplication
 import com.player.R
 import com.player.model.UserViewModel
 import com.player.movie.component.TitleComponent
-import com.player.movie.database.AppSqliteDataBase
-import com.player.movie.database.MovieSearchHistoryDatabase
 import com.player.movie.entity.MovieSearchHistoryEntity
-import com.player.movie.model.SearchHistoryViewModel
 import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
@@ -188,7 +185,7 @@ fun SearchHistory(context: Context){
             LaunchedEffect(Unit){
 //                val database: AppSqliteDataBase = MovieSearchHistoryDatabase.init(context)
 //                val searchWordList: MutableList<MovieSearchHistoryEntity> = database.searchHistoryDao().getAllHistory()
-                val searchWordList:MutableList<MovieSearchHistoryEntity> = BaseApplication.SHDB.searchHistoryDao().getAllHistory()
+                val searchWordList:MutableList<MovieSearchHistoryEntity> = BaseApplication.sdDb.searchHistoryDao()!!.getAllHistory()
                 println(searchWordList)
             }
             Row(
