@@ -11,17 +11,17 @@ import com.player.movie.entity.MovieSearchHistoryEntity
 
 @Dao
 interface SearchHistoryDao {
-    @Query("select * from movie_search_history order by create_time desc limit 10")
-    fun getAllHistory():List<MovieSearchHistoryEntity>
+    @Query("select * from movie_search_history order by create_time desc")
+    fun getAllHistory():MutableList<MovieSearchHistoryEntity>
 
-//    @Insert
-//    suspend fun insertHistory(history: MovieSearchHistoryEntity):Long
+    @Insert
+    suspend fun insertHistory(history: MovieSearchHistoryEntity):Long
 
-//    @Delete("delete from movie_search_history")
-//    suspend fun clearAll():Long
+    @Query("delete from movie_search_history")
+    suspend fun clearAll():Int
 
-//    @Delete(entity = "delete from movie_search_history where id=:id")
-//    suspend fun deleteById(id:Long):Long
+    @Query("delete from movie_search_history where id=:id")
+    suspend fun deleteById(id:Long):Int
 
     @Update
     suspend fun update(searchHistory: MovieSearchHistoryEntity)
