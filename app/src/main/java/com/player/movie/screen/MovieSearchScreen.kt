@@ -42,6 +42,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.google.accompanist.flowlayout.FlowRow
@@ -49,6 +52,7 @@ import com.player.BaseApplication
 import com.player.R
 import com.player.model.UserViewModel
 import com.player.movie.component.TitleComponent
+import com.player.movie.entity.MovieEntity
 import com.player.movie.entity.MovieSearchHistoryEntity
 import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
@@ -175,58 +179,44 @@ fun SearchHistory(context: Context){
     ) {
         TitleComponent("搜索历史")
         Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
-        FlowRow(
-            modifier = Modifier
-                .fillMaxSize()
-            ,
-            mainAxisSpacing = ThemeSize.containerPadding,
-            crossAxisSpacing = ThemeSize.containerPadding
-        ) {
-            LaunchedEffect(Unit){
-//                val database: AppSqliteDataBase = MovieSearchHistoryDatabase.init(context)
-//                val searchWordList: MutableList<MovieSearchHistoryEntity> = database.searchHistoryDao().getAllHistory()
-                val searchWordList:MutableList<MovieSearchHistoryEntity> = BaseApplication.sdDb.searchHistoryDao()!!.getAllHistory()
-                println(searchWordList)
-            }
+        var searchWordList  by mutableStateOf(emptyList<MovieSearchHistoryEntity>())
+        LaunchedEffect(Unit){
+            searchWordList = BaseApplication.sdDb.searchHistoryDao()!!.getAllHistory()
+        }
+        if(searchWordList.isEmpty()){
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .height(ThemeSize.middleAvater)
-                    .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
-            ) {
-                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
-                Text(
-                    text = "毒液：最后一舞",
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth().padding(ThemeSize.containerPadding)
+            ){
+                Text(text = "暂无搜索记录")
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .height(ThemeSize.middleAvater)
-                    .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
-            ) {
-                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
-                Text(
-                    text = "变形金刚：起源",
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
-            }
+        }else{
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            FlowRow(
                 modifier = Modifier
-                    .height(ThemeSize.middleAvater)
-                    .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
+                    .fillMaxSize()
+                ,
+                mainAxisSpacing = ThemeSize.containerPadding,
+                crossAxisSpacing = ThemeSize.containerPadding
             ) {
-                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
-                Text(
-                    text = "变形金刚：起源",
-                    textAlign = TextAlign.Center,
-                )
-                Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+                for (searchEntity in searchWordList){
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .height(ThemeSize.middleAvater)
+                            .background(
+                                ThemeColor.colorBg,
+                                RoundedCornerShape(ThemeSize.middleAvater)
+                            )
+                    ) {
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+                        Text(
+                            text = searchEntity.movieName,
+                            textAlign = TextAlign.Center,
+                        )
+                        Spacer(modifier = Modifier.width(ThemeSize.containerPadding))
+                    }
+                }
             }
         }
     }
