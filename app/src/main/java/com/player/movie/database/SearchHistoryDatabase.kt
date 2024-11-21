@@ -32,7 +32,7 @@ abstract class SearchHistoryDatabase : RoomDatabase() {
                     context.applicationContext,
                     SearchHistoryDatabase::class.java,
                     "search.db"
-                ).build()
+                ).allowMainThreadQueries().build()
             }
             return database
         }

@@ -52,22 +52,13 @@ import com.player.BaseApplication
 import com.player.R
 import com.player.model.UserViewModel
 import com.player.movie.component.TitleComponent
+import com.player.movie.dao.SearchHistoryDao
 import com.player.movie.entity.MovieEntity
 import com.player.movie.entity.MovieSearchHistoryEntity
 import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
 import com.player.theme.ThemeStyle
-
-//val searchHistoryViewModel by viewModels<SearchHistoryViewModel>(factoryProducer = {
-//    object : ViewModelProvider.Factory {
-//        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-//            return SearchHistoryViewModel(
-//                BaseApplication.SHDB
-//            ) as T
-//        }
-//    }
-//})
 
 @Composable
 fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewModel,keyword:String) {
@@ -81,6 +72,8 @@ fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewM
             ) {
                 val inputValue = remember{ mutableStateOf(keyword) }
                 val context = LocalContext.current
+                val searchHistoryDao: SearchHistoryDao = BaseApplication.sdDb.searchHistoryDao()!!
+                val searchWordList:MutableList<MovieSearchHistoryEntity> = searchHistoryDao.getAllHistory()
                 LazyColumn(
                     horizontalAlignment = Alignment.Start,
                     verticalArrangement = Arrangement.Top,
@@ -96,11 +89,11 @@ fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewM
                         )
                 ) {
                     item {
-                        SearchInput(inputValue)
+                        SearchInput(inputValue,keyword,searchWordList)
                     }
                     item {
                         Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
-                        SearchHistory(context)
+                        SearchHistory(context,searchWordList)
                     }
                 }
 
@@ -110,7 +103,7 @@ fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewM
 }
 
 @Composable
-fun SearchInput(inputValue: MutableState<String>){
+fun SearchInput(inputValue: MutableState<String>,keyword: String,searchWordList:MutableList<MovieSearchHistoryEntity>,searchHistoryDao: SearchHistoryDao){
     Row(
         modifier = ThemeStyle.boxDecoration
     ) {
@@ -123,7 +116,8 @@ fun SearchInput(inputValue: MutableState<String>){
                 .background(ThemeColor.colorBg, RoundedCornerShape(ThemeSize.middleAvater))
         ) {
             TextField(
-                value = inputValue.value,
+                placeholder = { Text(text = keyword, color = ThemeColor.disableColor)},
+                value ="",
                 colors = TextFieldDefaults.textFieldColors(
                     backgroundColor = ThemeColor.transparent,
                     focusedIndicatorColor=ThemeColor.transparent
@@ -165,7 +159,13 @@ fun SearchInput(inputValue: MutableState<String>){
                 .width(ThemeSize.middleBtnWidth)
             ,
             onClick = {
-
+                if(inputValue.value == "")inputValue.value = keyword
+                searchWordList.removeIf{
+                    it.movieName == inputValue.value
+                }
+                val history = MovieSearchHistoryEntity(movieName = inputValue.value,createTime = System.currentTimeMillis())
+                searchHistoryDao.insertHistory(history)
+                searchWordList.add(history)
             }) {
             Text(text = "搜索",style = TextStyle(color = ThemeColor.colorWhite))
         }
@@ -173,29 +173,25 @@ fun SearchInput(inputValue: MutableState<String>){
 }
 
 @Composable
-fun SearchHistory(context: Context){
+fun SearchHistory(context: Context,searchWordList:MutableList<MovieSearchHistoryEntity>){
     Column(
         modifier = ThemeStyle.boxDecoration
     ) {
         TitleComponent("搜索历史")
         Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
-        var searchWordList  by mutableStateOf(emptyList<MovieSearchHistoryEntity>())
-        LaunchedEffect(Unit){
-            searchWordList = BaseApplication.sdDb.searchHistoryDao()!!.getAllHistory()
-        }
         if(searchWordList.isEmpty()){
             Row(
                 horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth().padding(ThemeSize.containerPadding)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(ThemeSize.containerPadding)
             ){
                 Text(text = "暂无搜索记录")
             }
         }else{
 
             FlowRow(
-                modifier = Modifier
-                    .fillMaxSize()
-                ,
+                modifier = Modifier.fillMaxSize(),
                 mainAxisSpacing = ThemeSize.containerPadding,
                 crossAxisSpacing = ThemeSize.containerPadding
             ) {

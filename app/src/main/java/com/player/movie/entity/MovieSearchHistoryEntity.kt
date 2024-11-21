@@ -13,8 +13,6 @@ data class MovieSearchHistoryEntity(
     val id: Long = 0L,
     @ColumnInfo(name = "movie_name")
     val movieName: String,
-    @ColumnInfo(name = "classify")
-    val classify: String,
     @ColumnInfo(name = "create_time")
     val createTime: Long = 0L,
 )
