@@ -59,6 +59,8 @@ import com.player.theme.MymovieTheme
 import com.player.theme.ThemeColor
 import com.player.theme.ThemeSize
 import com.player.theme.ThemeStyle
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Composable
 fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewModel,keyword:String) {
@@ -89,7 +91,7 @@ fun MovieSearchScreen( navController: NavHostController,userViewModel: UserViewM
                         )
                 ) {
                     item {
-                        SearchInput(inputValue,keyword,searchWordList)
+                        SearchInput(inputValue,keyword,searchWordList,searchHistoryDao)
                     }
                     item {
                         Spacer(modifier = Modifier.height(ThemeSize.containerPadding))
@@ -164,7 +166,9 @@ fun SearchInput(inputValue: MutableState<String>,keyword: String,searchWordList:
                     it.movieName == inputValue.value
                 }
                 val history = MovieSearchHistoryEntity(movieName = inputValue.value,createTime = System.currentTimeMillis())
-                searchHistoryDao.insertHistory(history)
+                GlobalScope.launch {
+                    searchHistoryDao.insertHistory(history)
+                }
                 searchWordList.add(history)
             }) {
             Text(text = "搜索",style = TextStyle(color = ThemeColor.colorWhite))
